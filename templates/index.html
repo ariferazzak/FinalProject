@@ -11,6 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bree+Serif&family=Poppins:wght@700&display=swap" rel="stylesheet">
 
+    <!-- font poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <!-- Link jquery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     
@@ -18,23 +23,51 @@
 
     <!-- style css -->
     <style>
-        .bg{
-            background-image: url(/static/desa.jpeg); 
-            background-color: rgba(0, 0, 0, 0.493);
-            position:center; 
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .container{
-            margin-top: 250px;
-            color: rgb(251, 253, 255);
+        *{
+            font-family: 'Lobster', cursive;
             font-family: 'Poppins', sans-serif;
         }
 
-        .btn{
-            margin-top: 20px;
-            margin: 20px;
+        .bg{
+            background-image: url(/static/desa.jpg);
+            background-position:center; 
+            background-repeat: no-repeat;
+            background-size: auto !important;
+        }
+
+        .container{
+            width: 700px;
+            box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.1),0px 10px 15px -3px rgba(0,0,0,0.1);
+            margin-top: 210px;
+            padding: 25px;
+            border-radius: 20px;;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            align-items: center;
+        }
+
+        .btn-primary{
+            background-color: green !important;
+            border: none !important;
+            border-radius: 10px !important;
+        }
+
+        .btn-primary:focus{
+            box-shadow: none !important;
+            outline: 2px rgb(119, 220, 109) solid !important;
+        }
+
+        .btn-outline-info{
+            background-color: rgb(119, 220, 109) !important;
+            border: none !important;
+            border-radius: 10px !important;
+            color: green;
+        }
+
+        .btn-outline-info:focus{
+            box-shadow: none !important;
+            outline: 2px green solid !important;
+            color: white;
         }
     </style>
 
@@ -42,9 +75,80 @@
 </head>
 <body class="bg d-flex h-100 text-center">
     <div class="container">
-        <h1 class="display-3 fw-bold text-shadow">Selamat Datang di Desa Kami</h1>
-        <a href="/login" class="btn btn-lg btn-primary fw-bold">Login</a>
-        <a href="#" class="btn btn-lg btn-primary fw-bold">Daftar</a>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-4 fw-medium">Selamat Datang di Desa Kami</h1>
+            </div>
+        <div>
+            <!-- modal login -->
+                <div class="modal fade" id="modalLogin" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-10 offset-1 mt-4">
+                                    <h1>Login Sebagai</h1>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn-close bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="button mt-5 ">
+                                    <div class="row">
+                                        <div class="col-md-2 offset-3">
+                                            <button type="button" class="btn btn-primary mr-2" href="/loginAdmin">Admin</button>
+                                        </div>
+                                        <div class="col-md-2 offset-2">
+                                            <button type="button" class="btn btn-outline-info" href="/loginUser">User</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="modalDaftar" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-10 offset-1 mt-4">
+                                    <h1>Daftar Sebagai</h1>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" class="btn-close bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="button mt-5 ">
+                                    <div class="row">
+                                        <div class="col-md-2 offset-3">
+                                            <button type="button" class="btn btn-primary mr-2" href="">Admin</button>
+                                        </div>
+                                        <div class="col-md-2 offset-2">
+                                            <button type="button" class="btn btn-outline-info" href="">User</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end modal login -->
+
+            <!-- button -->
+            <div class="mt-4">
+                <div class="row">
+                    <div class="col-md-2 offset-4">
+                        <button class="btn btn-primary" data-bs-target="#modalLogin" data-bs-toggle="modal">Login</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-info" data-bs-target="#modalDaftar" data-bs-toggle="modal">Daftar</button>
+                    </div>
+                </div>
+            </div>
+            <!-- end button -->
+        </div>
     </div>
 </body>
 </html>
