@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bree+Serif&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <!-- font poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,36 +43,74 @@
             padding: 25px;
             border-radius: 20px;;
             justify-content: center;
-            font-family: 'Poppins', sans-serif;
             align-items: center;
         }
 
         .btn-primary{
-            background-color: green !important;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 25px;
+            width: 120px;
+            text-align: center;
+            
+            background-color: rgb(221, 129, 9) !important;
             border: none !important;
             border-radius: 10px !important;
         }
 
         .btn-primary:focus{
             box-shadow: none !important;
-            outline: 2px rgb(119, 220, 109) solid !important;
+            outline: 2px rgb(202, 162, 109) solid !important;
         }
 
         .btn-outline-info{
-            background-color: rgb(119, 220, 109) !important;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 25px;
+            width: 120px;
+            text-align: center;
+
+            background-color: rgb(202, 162, 109) !important;
             border: none !important;
             border-radius: 10px !important;
-            color: green;
+            color: #FFF;
         }
 
         .btn-outline-info:focus{
             box-shadow: none !important;
-            outline: 2px green solid !important;
-            color: white;
         }
+
+        .row h1{
+            font-style: normal;
+            font-weight: 800;
+            font-size: 55px;
+            line-height: 50px;
+            text-align: center;
+            color: #FFF;
+        }
+
+        .modal-body h1{
+            font-style: normal;
+            font-weight: 600;
+            font-size: 25px;
+            line-height: 50px;
+            text-align: center;
+            color: #000000;
+        }
+
+        .row a{
+            font-style: normal;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 21px;
+            text-align: center;
+        }
+
     </style>
 
-    <!-- javascript -->
+
 </head>
 <body class="bg d-flex h-100 text-center">
     <div class="container">
@@ -90,16 +129,17 @@
                                     <h1>Login Sebagai</h1>
                                 </div>
                                 <div class="col-md-1">
-                                    <button type="button" class="btn-close bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="bi bi-x-circle" data-bs-dismiss="modal" style="border: none;"></button>
                                 </div>
-                                <div class="button mt-5 ">
+                                <div class="button mt-4 ">
                                     <div class="row">
-                                        <div class="col-md-2 offset-3">
-                                            <button type="button" class="btn btn-primary mr-2" href="/loginAdmin">Admin</button>
+                                        <div class="col-md-4 offset-2">
+                                            <a type="button" class="btn btn-primary mr-2 bi bi-person-workspace " href="/loginAdmin">Admin</a>
                                         </div>
-                                        <div class="col-md-2 offset-2">
-                                            <button type="button" class="btn btn-outline-info" href="/loginUser">User</button>
+                                        <div class="col-md-2">
+                                            <a type="button" class="btn btn-outline-info bi bi-people" href="/loginUser">User</a>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -116,15 +156,15 @@
                                     <h1>Daftar Sebagai</h1>
                                 </div>
                                 <div class="col-md-1">
-                                    <button type="button" class="btn-close bi bi-x-lg" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="bi bi-x-circle" style="border: none;" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="button mt-5 ">
+                                <div class="button mt-4 ">
                                     <div class="row">
-                                        <div class="col-md-2 offset-3">
-                                            <button type="button" class="btn btn-primary mr-2" href="">Admin</button>
+                                        <div class="col-md-4 offset-2">
+                                            <a type="button" class="btn btn-primary mr-2 bi bi-person-workspace" href="">Admin</a>
                                         </div>
-                                        <div class="col-md-2 offset-2">
-                                            <button type="button" class="btn btn-outline-info" href="">User</button>
+                                        <div class="col-md-2">
+                                            <a type="button" class="btn btn-outline-info bi bi-people" href="">User</a>
                                         </div>
                                     </div>
                                 </div>
@@ -137,12 +177,12 @@
             <!-- end modal login -->
 
             <!-- button -->
-            <div class="mt-4">
+            <div class="clik mt-4">
                 <div class="row">
-                    <div class="col-md-2 offset-4">
+                    <div class="col-md-2 offset-3 ">
                         <button class="btn btn-primary" data-bs-target="#modalLogin" data-bs-toggle="modal">Login</button>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 offset-1">
                         <button class="btn btn-outline-info" data-bs-target="#modalDaftar" data-bs-toggle="modal">Daftar</button>
                     </div>
                 </div>
