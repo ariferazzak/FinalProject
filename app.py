@@ -52,6 +52,7 @@ def api_register_admin():
 def api_register_user():
     username_receive = request.form.get('username_give')
     nik_receive = request.form.get('nik_give')
+    alamat_receive = request.form.get('alamat_give')
     pw_receive = request.form.get('pw_give')
 
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
@@ -59,8 +60,8 @@ def api_register_user():
     db.user.insert_one({
         "name": username_receive, 
         "nik": nik_receive,
+        "alamat": alamat_receive,
         "pw": pw_hash,})
-
     return jsonify({"result": "success"})
 
 # api login sisi admin
