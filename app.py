@@ -1,39 +1,71 @@
-from flask import Flask, render_template, jsonify, request, session, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for
 from pymongo import MongoClient
 import jwt
+import datetime
 from datetime import datetime, timedelta
 import hashlib
 
 app = Flask(__name__)
-koneksi_mongodb = 'mongodb://razzak:razzak08@ac-klaldor-shard-00-00.eeumlbk.mongodb.net:27017,ac-klaldor-shard-00-01.eeumlbk.mongodb.net:27017,ac-klaldor-shard-00-02.eeumlbk.mongodb.net:27017/?ssl=true&replicaSet=atlas-7byu10-shard-0&authSource=admin&retryWrites=true&w=majority'
+koneksi_mongodb = 'mongodb://test:sparta@ac-rlfmp5k-shard-00-00.waymkxr.mongodb.net:27017,ac-rlfmp5k-shard-00-01.waymkxr.mongodb.net:27017,ac-rlfmp5k-shard-00-02.waymkxr.mongodb.net:27017/?ssl=true&replicaSet=atlas-yzrfcr-shard-0&authSource=admin&retryWrites=true&w=majority'
 client = MongoClient(koneksi_mongodb)
 db = client.dbfinal_project
 
 SECRET_KEY = 'finalProject'
+TOKEN_KEY = 'mytoken'
 
 @app.route('/')
 def homeLogin():
     return render_template('home.html')
 
+@app.route('/homepage_admin', methods=['GET'])
+def home():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+            )
+        user_info = db.user.find_one({'username': payload.get('id')})
+        return render_template('admin.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        msg='Your token has expired'
+        return redirect(url_for('loginAdmin', msg=msg))
+    except jwt.exceptions.DecodeError:
+        msg='There was problem logging you in'
+        return redirect(url_for('loginAdmin', msg=msg))
+    
+@app.route('/homepage_user', methods=['GET'])
+def home_user():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+            )
+        user_info = db.user.find_one({'username': payload.get('id')})
+        return render_template('user.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        msg='Your token has expired'
+        return redirect(url_for('loginUser', msg=msg))
+    except jwt.exceptions.DecodeError:
+        msg='There was problem logging you in'
+        return redirect(url_for('loginUser', msg=msg))
+
 @app.route('/login/admin')
 def loginAdmin():
-    return render_template('login_admin.html')
+    msg = request.args.get('msg')
+    return render_template('login_admin.html', msg=msg)
 
 @app.route('/login/user')
 def loginUser():
-    return render_template('login_user.html')
-
-@app.route('/register/admin')
-def registerAdmin():
-    return render_template('register_admin.html')
-
-@app.route('/register/user')
-def registerUser():
-    return render_template('register_user.html')
+    msg = request.args.get('msg')
+    return render_template('login_user.html', msg=msg)
 
 # api register sisi admin
-@app.route('/api/register/admin', methods=['POST'])
-def api_register_admin():
+@app.route('/register/admin', methods=['POST'])
+def register_admin():
     id_receive = request.form.get('id_give')
     username_receive = request.form.get('username_give')
     alamat_receive = request.form.get('alamat_give')
@@ -50,8 +82,8 @@ def api_register_admin():
     return jsonify({"result": "success"})
 
 # api register sisi user
-@app.route('/api/register/user', methods=['POST'])
-def api_register_user():
+@app.route('/register/user', methods=['POST'])
+def register_user():
     username_receive = request.form.get('username_give')
     nik_receive = request.form.get('nik_give')
     alamat_receive = request.form.get('alamat_give')
@@ -67,14 +99,14 @@ def api_register_user():
     return jsonify({"result": "success"})
 
 # api login sisi admin
-@app.route('/api/login/admin', methods=['POST'])
-def api_login_admin():
+@app.route('/login/admin', methods=['POST'])
+def login_admin():
     id_receive = request.form["id_give"]
     pw_receive = request.form["pw_give"]
 
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
 
-    result = db.user.find_one({
+    result = db.admin.find_one({
         "id": id_receive, 
         "pw": pw_hash
         })
@@ -86,16 +118,16 @@ def api_login_admin():
         token = jwt.encode(
             payload,
             SECRET_KEY,
-            algorithm="HS256"
+            algorithm=["HS256"]
             )
         return jsonify({"result": "success", "token": token})
     else:
         return jsonify({"result": "fail", "msg": "Either your email or your password is incorrect"})
     
 # api login sisi user
-@app.route('/api/login/user', methods=['POST'])
-def api_login_user():
-    username_receive = request.form["id_give"]
+@app.route('/login/user', methods=['POST'])
+def login_user():
+    username_receive = request.form["username_give"]
     pw_receive = request.form["pw_give"]
 
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
