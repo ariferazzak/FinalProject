@@ -107,6 +107,29 @@
         }
     </style>
 
+    <script>
+        function register_admin() {
+            $.ajax({
+                type: "POST",
+                url: "/api/register/admin",
+                data: {
+                    username_give: $("#userusername").val(),
+                    id_give: $("#userid").val(),
+                    alamat_give: $("#usralamat").val(),
+                    pw_give: $("#userpw").val(),
+                },
+                success: function (response) {
+                    if (response["result"] === "success") {
+                        alert("Registrasi Anda Berhasil!");
+                        window.location.href = "/login/admin";
+                    } else {
+                        alert(response["msg"]);
+                    }
+                },
+            });
+        }
+    </script>
+
 
 </head>
 
@@ -145,7 +168,7 @@
                                 <input type="email" class="form-control" id="password"
                                     placeholder="Masukkan konfirmasi password anda">
                             </div>
-                            <button type="submit" class="signin btn btn-primary">Register</button>
+                            <button class="signin btn btn-primary" onclick="register_admin()">Register</button>
                             <div class="text-center">
                                 <span class="d-inline">Sudah punya akun? <a href="/login/admin"
                                         class="daftar d-inline text-decoration-none">Login sekarang</a></span>
