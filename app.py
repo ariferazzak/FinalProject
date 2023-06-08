@@ -24,10 +24,10 @@ def home():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            algorithms="HS256",
             )
-        user_info = db.user.find_one({'username': payload.get('id')})
-        return render_template('admin.html', user_info=user_info)
+        admin_info = db.admin.find_one({'username': payload.get('id')})
+        return render_template('admin.html', admin_info=admin_info)
     except jwt.ExpiredSignatureError:
         msg='Your token has expired'
         return redirect(url_for('loginAdmin', msg=msg))
@@ -42,9 +42,9 @@ def home_user():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            algorithms="HS256",
             )
-        user_info = db.user.find_one({'username': payload.get('id')})
+        user_info = db.user.find_one({'name': payload.get('_id')})
         return render_template('user.html', user_info=user_info)
     except jwt.ExpiredSignatureError:
         msg='Your token has expired'
@@ -113,7 +113,7 @@ def login_admin():
     if result is not None:
         payload ={
             "id": id_receive,
-            "exp": datetime.utcnow() + timedelta(seconds=5),
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
         token = jwt.encode(
             payload,
@@ -139,7 +139,7 @@ def login_user():
     if result is not None:
         payload ={
             "name": username_receive,
-            "exp": datetime.utcnow() + timedelta(seconds=5),
+            "exp": datetime.utcnow() + timedelta(seconds=60 * 60 * 24),
         }
         token = jwt.encode(
             payload,
@@ -149,6 +149,14 @@ def login_user():
         return jsonify({"result": "success", "token": token})
     else:
         return jsonify({"result": "fail", "msg": "Either your email or your password is incorrect"})
+
+@app.route('/pengaduan',methods=['GET'])
+def pengaduan():
+    return render_template("pengaduan.html")
+
+@app.route('/status',methods=['GET'])
+def status():
+    return render_template("status.html")
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
