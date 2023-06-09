@@ -18,6 +18,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <link rel="stylesheet" href="/static/style.css">
+
+    <!-- font poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -82,12 +87,13 @@
           <div class="col-10 col-sm-8 col-lg-6">
             <img src="/static/berkas.svg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
           </div>
-          <div class="col-lg-6">
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3" style="font-family: 'Righteous', cursive;">Hallo, {{ user_info.name }}</h1>
-            <p class="lead">Salah satu inovasi layanan pengganti tatap muka, sehingga pemohon atau warga dapat mengurus dokumen dari rumah dan dapat mencetak mandiri. Pelayanan meliputi permohonan surat dan pengaduan. 
-            <br> Jam Layanan Kerja : Senin - Jumat : 08.00 - 17.00 WIB
+          <div class="content col-lg-6">
+            <h1 class="title-header text-body-emphasis lh-1 mb-3" >Hallo, {{ user_info.name }}</h1>
+            <p class="lead">Salah satu inovasi layanan pengganti tatap muka, sehingga pemohon atau warga dapat mengurus dokumen dari rumah dan dapat mencetak mandiri. Pelayanan meliputi permohonan surat dan pengaduan.
+            <br><strong> Jam Layanan Kerja : Senin - Jumat 
+            <br>Pukul : 08.00 - 17.00 WIB</strong>
             </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <div class="status d-grid gap-2 d-md-flex justify-content-md-start">
               <a href="/status" type="button" class="btn btn-lg px-4 me-md-2" style="background-color: rgb(209, 127, 27);">Cek Status Permohonan </a>
             </div>
           </div>
