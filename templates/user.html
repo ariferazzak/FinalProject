@@ -34,7 +34,7 @@
               <strong style="font-size: 20px;">{{ name_info.name }}</strong>
             </a>
             <ul class="dropdown-menu text-small shadow">
-              <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit Profile</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#">Sign out</a></li>
             </ul>
@@ -95,6 +95,32 @@
             </p>
             <div class="status d-grid gap-2 d-md-flex justify-content-md-start">
               <a href="/status" type="button" class="btn btn-lg px-4 me-md-2" style="background-color: rgb(209, 127, 27);">Cek Status Permohonan </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- class modal -->
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Profile</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="name" class="form-label">Ganti Foto Profil</label>
+                <input type="file" class="form-control" id="picture">
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Ganti Username</label>
+                <input type="text" class="form-control" id="username_update" placeholder="Nama anda">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-dark">Save</button>
             </div>
           </div>
         </div>

@@ -36,7 +36,7 @@ def home():
         return redirect(url_for('loginAdmin', msg=msg))
     
 @app.route('/homepage_user', methods=['GET'])
-def home_user(name):
+def home_user():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(
@@ -44,10 +44,8 @@ def home_user(name):
             SECRET_KEY, 
             algorithms="HS256",
         )
-        status = name == payload.get('nik')
         name_info = db.user.find_one({
-            'name': name},
-            {'_id': False})
+            'name': payload['id']})
         return render_template('user.html', name_info=name_info, status=status)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
