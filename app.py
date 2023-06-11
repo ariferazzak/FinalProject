@@ -50,21 +50,6 @@ def home_user():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
 
-@app.route('/homepage_admin', methods=['GET'])
-def home_admin():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms="HS256",
-        )
-        name_info = db.user.find_one({
-            'name': payload['id']})
-        return render_template('user.html', name_info=name_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for('loginAdmin'))
-    
 @app.route('/login/admin')
 def loginAdmin():
     msg = request.args.get('msg')
