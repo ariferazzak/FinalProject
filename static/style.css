@@ -17,7 +17,8 @@ main {
     padding: 0;
     list-style: none;
     text-decoration: none;
-    font-family: 'Merriweather', serif;
+    font-family: 'Lobster', cursive;
+    font-family: 'Poppins', sans-serif;
 }
 
 .close{
@@ -33,4 +34,31 @@ main {
 
 .msg{
     color: rgb(161, 89, 0);
+}
+
+.title-header{
+    font-style: normal;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 35px;
+    color: #000000;
+    margin-bottom: 25px;
+}
+
+.content .lead{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #000000;
+    text-align: justify;
+}
+
+.status{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    color: #FFFFFF;
+    margin-bottom: 20px;
 }
