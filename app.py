@@ -43,15 +43,12 @@ def home_user():
             token_receive, 
             SECRET_KEY, 
             algorithms="HS256",
-            )
-        user_info = db.user.find_one({'name': payload.get('_id')})
-        return render_template('user.html', user_info=user_info)
-    except jwt.ExpiredSignatureError:
-        msg='Your token has expired'
-        return redirect(url_for('loginUser', msg=msg))
-    except jwt.exceptions.DecodeError:
-        msg='There was problem logging you in'
-        return redirect(url_for('loginUser', msg=msg))
+        )
+        name_info = db.user.find_one({
+            'name': payload['id']})
+        return render_template('user.html', name_info=name_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('loginUser'))
 
 @app.route('/login/admin')
 def loginAdmin():
@@ -151,16 +148,55 @@ def login_user():
         return jsonify({"result": "fail", "msg": "Either your email or your password is incorrect"})
 
 @app.route('/pengaduan',methods=['GET'])
-def pengaduan():
-    return render_template("pengaduan.html")
+def pengaduan(name):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms="HS256",
+        )
+        status = name == payload.get('nik')
+        name_info = db.user.find_one({
+            'name': name},
+            {'_id': False})
+        return render_template('status.html', name_info=name_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect('/homepage_user')
 
 @app.route('/status',methods=['GET'])
-def status():
-    return render_template("status.html")
+def status(name):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms="HS256",
+        )
+        status = name == payload.get('nik')
+        name_info = db.user.find_one({
+            'name': name},
+            {'_id': False})
+        return render_template('status.html', name_info=name_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect('/homepage_user')
 
-@app.route('/profile/admin')
-def profileAdmin():
-    return render_template('profile_admin.html')
+@app.route('/profile/admin',methods=['GET'])
+def profile_admin(name):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms="HS256",
+        )
+        status = name == payload.get('nik')
+        name_info = db.user.find_one({
+            'name': name},
+            {'_id': False})
+        return render_template('status.html', name_info=name_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect('/homepage_user')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

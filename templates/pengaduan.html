@@ -8,15 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+    <!-- font poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/style.css">
 
     <style>
+      *{
+          font-family: 'Lobster', cursive;
+          font-family: 'Poppins', sans-serif;
+      }
+
       .title{
+
+
         text-align: center; 
         margin-top:100px;
-        color: white;
+        color: #000000;
+        margin-bottom: 50px;
       }
 
       .container{
@@ -26,6 +39,21 @@
         background-color: beige;
         border-radius: 10px;
         padding-top: 10px;
+      }
+
+      .kirim{
+        color: #FFFFFF;
+        border-radius: 10px;
+        text-align: center;
+        background-color: #000000;
+        outline: none;
+        margin-top: 10px;
+      }
+
+      .kirim:focus{
+        background-color: #FFFFFF;
+        color: #000000;
+        outline: none;
       }
     </style>
 
@@ -38,7 +66,7 @@
           <div class="dropdown">
             <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="https://github.com/mdo.png" alt="" width="50" height="50" class="rounded-circle me-2">
-              <strong style="font-size: 20px;">{{ user_info.name }}</strong>
+              <strong style="font-size: 20px;">{{ name_info.name }}</strong>
             </a>
             <ul class="dropdown-menu text-small shadow">
               <li><a class="dropdown-item" href="#">Edit Profile</a></li>
@@ -91,20 +119,23 @@
     <main>
         <div class="title" >
             <h1><strong>LAYANAN PENGADUAN MASYARAKAT</strong></h1>
-            <p>Semua Pengaduan Anda Akan Menjadi Evaluasi Kami</p>
+            <span>Semua Pengaduan Anda Akan Menjadi Evaluasi Kami</span>
         </div>
         <div class="container">
-          <div class="mb-3">
-            <label for="name" class="form-label">Nama</label>
-            <input type="text" class="form-control" id="name" placeholder="Masukkan nama Anda">
-          </div>
-          <div class="mb-3">
-            <label for="pengaduan" class="form-label">Pengaduan</label>
-            <textarea class="form-control" id="pengaduan" placeholder="Masukkan laporan Anda" rows="3"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="formFile" class="form-label">Upload Bukti Pengaduan</label>
-            <input class="form-control" type="file" id="formFile">
+          <div class="row justify-content-center">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nama</label>
+              <input type="text" class="form-control" id="name" placeholder="Masukkan nama Anda">
+            </div>
+            <div class="mb-3">
+              <label for="pengaduan" class="form-label">Pengaduan</label>
+              <textarea class="form-control" id="pengaduan" placeholder="Masukkan laporan Anda" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Upload Bukti Pengaduan</label>
+              <input class="form-control" type="file" id="formFile">
+            </div>
+            <button type="button" class="kirim btn col-md-4">Send</button>
           </div>
         </div>
     </main>
