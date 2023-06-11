@@ -191,7 +191,7 @@ def profile_admin(name):
             algorithms="HS256",
         )
         status = name == payload.get('nik')
-        name_info = db.user.find_one({
+        name_info = db.admin.find_one({
             'name': name},
             {'_id': False})
         return render_template('status.html', name_info=name_info, status=status)
