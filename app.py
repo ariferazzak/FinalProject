@@ -148,6 +148,22 @@ def status(name):
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/homepage_user')
 
+@app.route('/profile/admin',methods=['GET'])
+def profile_admin(name):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms="HS256",
+        )
+        status = name == payload.get('nik')
+        name_info = db.user.find_one({
+            'name': name},
+            {'_id': False})
+        return render_template('status.html', name_info=name_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect('/homepage_admin')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
