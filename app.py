@@ -181,6 +181,10 @@ def status(name):
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/homepage_user')
 
+@app.route('/profile/admin')
+def profileAdmin():
+    return render_template('profile_admin.html')
+
 @app.route('/profile/admin',methods=['GET'])
 def profile_admin(name):
     token_receive = request.cookies.get(TOKEN_KEY)
