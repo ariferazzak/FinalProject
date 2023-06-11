@@ -146,40 +146,29 @@
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
-                    $.cookie("mytoken", response["token"], { path: "/" });
-                    window.location.replace("/");
+                    $.cookie("mytoken", response["token"], {path: "/homepage_admin" });
+                    window.location.replace("/homepage_admin");
                     } else {
-                    alert(response["msg"]);
+                        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+                        const appendAlert = (message, type)=> {
+                        const wrapper = document.createElement('div')
+                        wrapper.innerHTML = 
+                            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                            `   <div>${message}</div>`,
+                            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                            '</div>'
+
+                        alertPlaceholder.append(wrapper)
+                        }
+                        const alertTrigger = document.getElementById('liveAlertBtn')
+                        if (alertTrigger) {
+                        alertTrigger.addEventListener('click', () => {
+                            appendAlert('msg', 'danger')
+                        })
+                        }
                     }
                 },
                 });
-        }
-        
-        function sign_up() {
-            let id = $("#id").val();
-            let username = $("#username").val();
-            let password = $("#input-password").val();
-            let password2 = $("#input-password2").val();
-            $.ajax({
-                type: "POST",
-                url: "/register/admin",
-                data: {
-                    id_give:id,
-                    username_give: username,
-                    pw_give: password,
-                },
-                success: function (response) {
-                    alert("Your are signed up! Nice!");
-                    window.location.replace("/login/admin");
-                },
-                });
-        }
-
-        function toggle_signup() {
-            $("#re-pw").toggleClass("is-hidden")
-            $("#uname").toggleClass("is-hidden")
-            $("#button").toggleClass("is-hidden")
-            $("#title").toggleClass("is-hidden")
         }
 
     </script>
@@ -196,16 +185,7 @@
                             <h1>Halo, Admin</h1>
                             <p>Selamat Datang di Desa Kami | Silahkan Login</p>
                         </div>
-                        <div id="uname" class="is-hidden">
-                            <div class="header-signup">
-                                <h1>Halo, Admin</h1>
-                                <p>Selamat Datang di Desa Kami | Silahkan Daftar</p>
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" placeholder="Masukkan username anda">
-                            </div>
-                        </div>
+                        <div id="liveAlertPlaceholder"></div>
                         <div class="mb-3">
                           <label for="id" class="form-label">Id</label>
                           <input type="text" class="form-control" id="id" placeholder="Masukkan id anda">
@@ -215,17 +195,7 @@
                           <input type="password" class="form-control" id="input-password" placeholder="Masukkan password anda">
                         </div>
                         <div id="button">
-                            <button onclick="sign_in()" type="submit" class="signin btn btn-primary">Login</button>
-                            <div class="text-center">
-                                <span class="d-inline">Belum punya akun? <a onclick="toggle_signup()" class="daftar d-inline text-decoration-none">Daftar sekarang</a></span>
-                            </div>
-                        </div>
-                        <div id="re-pw" class="is-hidden">
-                            <div class="mb-3">
-                                <label for="re-password" class="form-label">Confirm Password</label>
-                                <input type="password" class="form-control" id="input-password2" placeholder="Konfirmasi password anda">
-                            </div>
-                            <button onclick="sign_up()" type="submit" class="signup btn btn-primary">Daftar</button>
+                            <button onclick="sign_in()" type="submit" class="signin btn btn-primary" id="liveAlertBtn">Login</button>
                         </div>
                     </div>
                 </div>
