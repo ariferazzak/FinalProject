@@ -4,6 +4,7 @@ import jwt
 import datetime
 from datetime import datetime, timedelta
 import hashlib
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 koneksi_mongodb = 'mongodb+srv://finalproject387:finalproject@cluster0.86upttf.mongodb.net/?retryWrites=true&w=majority'
@@ -31,7 +32,7 @@ def home_user():
             algorithms="HS256",
         )
         name_info = db.user.find_one({
-            'name': payload.get('nik')})
+            'name': payload.get('name')})
         return render_template('user.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
@@ -59,7 +60,9 @@ def register_user():
         "name": username_receive, 
         "nik": nik_receive,
         "alamat": alamat_receive,
-        "pw": pw_hash,})
+        "pw": pw_hash,
+        "profile_pic" : "",
+        "profile_pic_real": "profile_pics/profile_placeholder.png"})
     return jsonify({"result": "success"})
 
 # api login sisi admin
@@ -114,8 +117,13 @@ def login_user():
     else:
         return jsonify({"result": "fail"})
 
-@app.route('/pengaduan',methods=['GET'])
-def pengaduan(name):
+@app.route('/homepage_user/pengaduan',methods=['GET'])
+def pengaduan():
+        name_info = db.user.find_one()
+        return render_template('pengaduan.html', name_info=name_info)
+
+@app.route('/homepage_user/status',methods=['GET'])
+def status():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
         payload = jwt.decode(
@@ -123,47 +131,42 @@ def pengaduan(name):
             SECRET_KEY, 
             algorithms="HS256",
         )
-        status = name == payload.get('nik')
         name_info = db.user.find_one({
-            'name': name},
-            {'_id': False})
-        return render_template('pengaduan.html', name_info=name_info, status=status)
+            'name': payload.get('name')})
+        return render_template('status.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect('/homepage_user')
-
-@app.route('/status',methods=['GET'])
-def status(name):
+    
+@app.route('/update_profile', methods=['POST'])
+def save_img():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms="HS256",
-        )
-        status = name == payload.get('nik')
-        name_info = db.user.find_one({
-            'name': name},
-            {'_id': False})
-        return render_template('status.html', name_info=name_info, status=status)
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+        name = payload['name']
+        name_receive = request.form["name_give"]
+        
+        new_doc = {
+            "name": name_receive,
+            }
+        
+        if "file_give" in request.files:
+            file = request.files["file_give"]
+            filename = secure_filename(file.filename)
+            extension = filename.split(".")[-1]
+            file_path = f"profile_pics/{name}.{extension}"
+            file.save("./static/" + file_path)
+            new_doc["profile_pic"] = filename
+            new_doc["profile_pic_real"] = file_path
+        db.user.update_one(
+            {"name": payload["name"]}, 
+            {"$set": new_doc}
+            )
+        return jsonify({
+            'result': 'success', 
+            'msg': 'Your profile has been updated'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect('/homepage_user')
+        return redirect(url_for('home'))
 
-@app.route('/profile/admin',methods=['GET'])
-def profile_admin(name):
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms="HS256",
-        )
-        status = name == payload.get('nik')
-        name_info = db.user.find_one({
-            'name': name},
-            {'_id': False})
-        return render_template('status.html', name_info=name_info, status=status)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect('/homepage_admin')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
