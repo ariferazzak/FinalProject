@@ -146,8 +146,8 @@
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
-                    $.cookie("mytoken", response["token"], {path: "/homepage_admin" });
-                    window.location.replace("/homepage_admin");
+                    $.cookie("mytoken", response["token"], {path: "/admin" });
+                    window.location.replace("/admin");
                     } else {
                         const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
                         const appendAlert = (message, type)=> {

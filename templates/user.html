@@ -43,7 +43,7 @@
           success: function (response) {
             if (response["result"] === "success") {
               alert(response["msg"]);
-              window.location.reload();
+              window.location.reload('/user');
             }
           },
         });
@@ -78,7 +78,7 @@
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/homepage_user">Home</a>
+                  <a class="nav-link active" aria-current="page" href="/user">Home</a>
                 </li>
                 <hr>
                 <li class="nav-item">
@@ -138,7 +138,7 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="name" class="form-label">Ganti Foto Profil</label>
+                <label for="pic" class="form-label">Ganti Foto Profil</label>
                 <input type="file" class="form-control" id="picture">
               </div>
               <div class="mb-3">

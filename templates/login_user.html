@@ -130,8 +130,8 @@
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
-                    $.cookie("mytoken", response["token"], { path: "/homepage_user" });
-                    window.location.replace("/homepage_user");
+                    $.cookie("mytoken", response["token"], { path: "/user" });
+                    window.location.replace("/user");
                     } else {
                     alert(response["msg"]);
                     }

@@ -5,8 +5,12 @@ import datetime
 from datetime import datetime, timedelta
 import hashlib
 from werkzeug.utils import secure_filename
+from bson import ObjectId
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['UPLOAD_FOLDER'] = {'./static/file_bukti', './static/profile_pics'}
+
 koneksi_mongodb = 'mongodb+srv://finalproject387:finalproject@cluster0.86upttf.mongodb.net/?retryWrites=true&w=majority'
 client = MongoClient(koneksi_mongodb)
 db = client.dbfinal_project
@@ -18,11 +22,11 @@ TOKEN_KEY = 'mytoken'
 def homeLogin():
     return render_template('home.html')
 
-@app.route('/homepage_admin', methods=['GET'])
+@app.route('/admin', methods=['GET'])
 def home_admin():
     return render_template('profile_admin.html')
 
-@app.route('/homepage_user', methods=['GET'])
+@app.route('/user', methods=['GET'])
 def home_user():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
@@ -122,6 +126,26 @@ def pengaduan():
         name_info = db.user.find_one()
         return render_template('pengaduan.html', name_info=name_info)
 
+@app.route('/posting',methods=['POST'])
+def pengaduan_post():
+        username_receive = request.form.get('username_give')
+        pengaduan_receive = request.form.get('pengaduan_give')
+        file_receive = request.form.get('file_give')
+
+        if "file_give" in request.files:
+            file = request.files["file_give"]
+            file.save("./static/file_bukti")
+        
+        doc={
+        "name" : username_receive,
+        "pengaduan": pengaduan_receive,
+        "file":file_receive}
+
+        db.pengaduan.insert_one(doc)
+
+        return jsonify({"result": "success"})
+
+
 @app.route('/homepage_user/status',methods=['GET'])
 def status():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -157,15 +181,16 @@ def save_img():
             file.save("./static/" + file_path)
             new_doc["profile_pic"] = filename
             new_doc["profile_pic_real"] = file_path
+        
         db.user.update_one(
-            {"name": payload["name"]}, 
+            {"nik": payload.get('nik')}, 
             {"$set": new_doc}
             )
         return jsonify({
             'result': 'success', 
             'msg': 'Your profile has been updated'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for('home'))
+        return redirect(url_for('home_user'))
 
 
 if __name__ == '__main__':
