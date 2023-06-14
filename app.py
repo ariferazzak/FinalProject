@@ -195,7 +195,7 @@ def save_img():
             new_doc["profile_pic_real"] = file_path
         
         db.user.update_one(
-            {"nik": payload.get('nik')}, 
+            {"nik": payload['nik']}, 
             {"$set": new_doc}
             )
         return jsonify({
