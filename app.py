@@ -24,7 +24,11 @@ def homeLogin():
 
 @app.route('/admin', methods=['GET'])
 def home_admin():
-    return render_template('profile_admin.html')
+    data_masyarakat = db.user.find()
+    return render_template(
+        'profile_admin.html',
+         data_masyarakat = data_masyarakat,
+        )
 
 @app.route('/user', methods=['GET'])
 def home_user():
@@ -123,43 +127,51 @@ def login_user():
 
 @app.route('/homepage_user/pengaduan',methods=['GET'])
 def pengaduan():
-        name_info = db.user.find_one()
-        return render_template('pengaduan.html', name_info=name_info)
+    name_info = db.user.find_one()
+    return render_template('pengaduan.html', name_info=name_info)
 
 @app.route('/posting',methods=['POST'])
 def pengaduan_post():
         username_receive = request.form.get('username_give')
         pengaduan_receive = request.form.get('pengaduan_give')
         file_receive = request.form.get('file_give')
+        kejadian_receive = request.form.get('kejadian_give')
+        date_receive = request.form['date_give']
 
         if "file_give" in request.files:
             file = request.files["file_give"]
-            file.save("./static/file_bukti")
+            file.save("./static/file_bukti/")
         
         doc={
         "name" : username_receive,
         "pengaduan": pengaduan_receive,
-        "file":file_receive}
+        "tanggal_kejadian": kejadian_receive,
+        "file":file_receive,
+        "date":date_receive}
 
         db.pengaduan.insert_one(doc)
 
         return jsonify({"result": "success"})
-
+@app.route ('/posting/pengaduan', methods=['GET'])
+def pengaduan_get():
+    username_receive = request.args.get('username_give')
+    if username_receive == '':
+        posts = list(db.pengaduan.find({}).sort('date', -1).limit(20))
+    else:
+        posts = list(
+                db.pengaduan.find({'username': username_receive}).sort('date', -1).limit(20)
+            )
+    for post in posts:
+        post['_id'] = str(post['_id'])
+    return jsonify({
+            'result': 'success', 
+            'msg': 'Successful fetched all posts',
+            'posts': posts})
 
 @app.route('/homepage_user/status',methods=['GET'])
 def status():
-    token_receive = request.cookies.get(TOKEN_KEY)
-    try:
-        payload = jwt.decode(
-            token_receive, 
-            SECRET_KEY, 
-            algorithms="HS256",
-        )
-        name_info = db.user.find_one({
-            'name': payload.get('name')})
-        return render_template('status.html', name_info=name_info)
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect('/homepage_user')
+    name_info = db.user.find_one()
+    return render_template('status.html', name_info=name_info)
     
 @app.route('/update_profile', methods=['POST'])
 def save_img():
@@ -191,6 +203,11 @@ def save_img():
             'msg': 'Your profile has been updated'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
+
+@app.route('/pelayanan/kelahiran', methods=['GET'])
+def kelahiran():
+    name_info = db.user.find_one()
+    return render_template('surat_kelahiran.html', name_info=name_info)
 
 
 if __name__ == '__main__':

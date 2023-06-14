@@ -28,9 +28,9 @@
     <header>
       <nav class="navbar fixed-top" aria-label="Digital sensus">
         <div class="container-fluid">
-          <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="https://github.com/mdo.png" alt="" width="50" height="50" class="rounded-circle me-2">
+          <div class="profile">
+            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none" aria-expanded="false">
+              <img src="{{ url_for('static', filename=name_info.profile_pic_real) }}" alt="" width="50" height="50" class="rounded-circle me-2">
               <strong style="font-size: 20px;">{{ name_info.name }}</strong>
             </a>
           </div>
