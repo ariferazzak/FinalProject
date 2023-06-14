@@ -132,26 +132,36 @@ def pengaduan():
 
 @app.route('/posting',methods=['POST'])
 def pengaduan_post():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+        name = payload['name']
         username_receive = request.form.get('username_give')
         pengaduan_receive = request.form.get('pengaduan_give')
-        file_receive = request.form.get('file_give')
+        file_path =''
         kejadian_receive = request.form.get('kejadian_give')
         date_receive = request.form['date_give']
+        file = request.files["file_give"]
 
-        if "file_give" in request.files:
-            file = request.files["file_give"]
-            file.save("./static/file_bukti/")
+        if file:
+            filename = secure_filename(file.filename)
+            extension = filename.split(".")[-1]
+            file_path = f"file_bukti/{name}.{extension}"
+            file.save("./static/" + file_path)
         
         doc={
         "name" : username_receive,
         "pengaduan": pengaduan_receive,
         "tanggal_kejadian": kejadian_receive,
-        "file":file_receive,
+        "file":file_path,
         "date":date_receive}
 
         db.pengaduan.insert_one(doc)
 
         return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
+    
 @app.route ('/posting/pengaduan', methods=['GET'])
 def pengaduan_get():
     username_receive = request.args.get('username_give')
