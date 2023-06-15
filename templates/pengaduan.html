@@ -18,7 +18,9 @@
     <link rel="stylesheet" href="/static/style.css">
 
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
     <style>
       *{
           font-family: 'Lobster', cursive;
@@ -57,29 +59,7 @@
       }
     </style>
 
-    <script>
-       function simpan() {
-            let name = $("#name").val();
-            let pengaduan = $("#pengaduan").val();
-            let kejadian = $("#tanggal").val();
-            let file = $("#formFile").val();
-            let today = new Date().toISOString()
-            $.ajax({
-                type: "POST",
-                url: "/posting",
-                data: {
-                    username_give:name,
-                    pengaduan_give:pengaduan,
-                    file_give: file,
-                    kejadian_give : kejadian, 
-                    date_give :today
-                },
-                success: function (response) {
-                    alert("Pengaduan Anda Telah di Kirim!");
-                    window.location.replace("/user");
-                },
-                });
-       }
+    <script src="/static/user.js">
     </script>
 
     <title>Pengaduan</title>

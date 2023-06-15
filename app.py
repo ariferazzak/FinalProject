@@ -9,7 +9,6 @@ from bson import ObjectId
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['UPLOAD_FOLDER'] = {'./static/file_bukti', './static/profile_pics'}
 
 koneksi_mongodb = 'mongodb+srv://finalproject387:finalproject@cluster0.86upttf.mongodb.net/?retryWrites=true&w=majority'
 client = MongoClient(koneksi_mongodb)
@@ -37,10 +36,10 @@ def home_user():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms="HS256",
+            algorithm="HS256",
         )
         name_info = db.user.find_one({
-            'name': payload.get('name')})
+            'name': payload.get ('name')})
         return render_template('user.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
@@ -125,16 +124,27 @@ def login_user():
     else:
         return jsonify({"result": "fail"})
 
-@app.route('/homepage_user/pengaduan',methods=['GET'])
-def pengaduan():
-    name_info = db.user.find_one()
-    return render_template('pengaduan.html', name_info=name_info)
-
+@app.route('/pengaduan/<username>',methods=['GET'])
+def pengaduan(username):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithm="HS256",
+        )
+        username = payload.get("name")
+        name_info = db.user.find_one({
+            'name': username})
+        return render_template('pengaduan.html', name_info=name_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user', username=username))
+    
 @app.route('/posting',methods=['POST'])
 def pengaduan_post():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithm='HS256')
         name = payload['name']
         username_receive = request.form.get('username_give')
         pengaduan_receive = request.form.get('pengaduan_give')
@@ -146,8 +156,8 @@ def pengaduan_post():
         if file:
             filename = secure_filename(file.filename)
             extension = filename.split(".")[-1]
-            file_path = f"file_bukti/{name}.{extension}"
-            file.save("./static/" + file_path)
+            file_path = f"bukti-{name}.{extension}"
+            file.save("./static/file_bukti/" + file_path)
         
         doc={
         "name" : username_receive,
@@ -178,25 +188,34 @@ def pengaduan_get():
             'msg': 'Successful fetched all posts',
             'posts': posts})
 
-@app.route('/homepage_user/status',methods=['GET'])
-def status():
-    name_info = db.user.find_one()
-    return render_template('status.html', name_info=name_info)
+@app.route('/status/<username>',methods=['GET'])
+def status(username):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithm="HS256",
+        )
+        status = username == payload.get ('name')
+        name_info = db.user.find_one({
+            'name': username})
+        return render_template('status.html', name_info=name_info, status=status)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
     
 @app.route('/update_profile', methods=['POST'])
 def save_img():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithm='HS256')
         name = payload['name']
         name_receive = request.form["name_give"]
-        
-        new_doc = {
-            "name": name_receive,
-            }
-        
-        if "file_give" in request.files:
-            file = request.files["file_give"]
+        id = request.form["id"]
+        file_path= ""
+        file = request.files["file_give"]
+
+        if file:            
             filename = secure_filename(file.filename)
             extension = filename.split(".")[-1]
             file_path = f"profile_pics/{name}.{extension}"
@@ -204,8 +223,11 @@ def save_img():
             new_doc["profile_pic"] = filename
             new_doc["profile_pic_real"] = file_path
         
+        new_doc = {
+            "name": name_receive,
+            }
         db.user.update_one(
-            {"nik": payload['nik']}, 
+            {"_id": ObjectId(id)}, 
             {"$set": new_doc}
             )
         return jsonify({
