@@ -241,6 +241,18 @@ def kelahiran():
     name_info = db.user.find_one()
     return render_template('surat_kelahiran.html', name_info=name_info)
 
+@app.route('/resume/kelahiran',methods=['GET','POST'])
+def resume_kelahiran():
+    return render_template('resume_kelahiran.html')
+
+@app.route('/resume/domisili',methods=['GET','POST'])
+def resume_domisili():
+    return render_template('resume_domisili.html')
+
+@app.route('/resume/kematian',methods=['GET','POST'])
+def resume_kematian():
+    return render_template('resume_kematian.html')
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
