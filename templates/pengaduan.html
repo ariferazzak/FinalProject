@@ -18,9 +18,7 @@
     <link rel="stylesheet" href="/static/style.css">
 
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-
+    
     <style>
       *{
           font-family: 'Lobster', cursive;
@@ -58,8 +56,33 @@
         outline: none;
       }
     </style>
+    <script>
+      function posting(){
+        let nama = $("#name").val();
+        let pengaduan = $("#pengaduan").val();
+        let date = $("#tanggal").val();
+        let file = $("#file").prop("files")[0];
+        let today = new Date().toISOString()
+        let form_data = new FormData();
 
-    <script src="/static/user.js">
+        form_data.append("name", nama);
+        form_data.append("pengaduan", pengaduan);
+        form_data.append("tanggal", date);
+        form_data.append("file", file);
+        form_data.append("today", today);
+    
+        $.ajax({
+          method:"POST",
+          url:"/posting",
+          data: form_data,
+          contentType: false,
+          processData: false,
+          success: function (response) {
+            alert(response.result)
+            window.location.reload();
+          },
+        })
+      }
     </script>
 
     <title>Pengaduan</title>
@@ -123,25 +146,29 @@
         </div>
         <div class="container">
           <div class="row justify-content-center">
+
             <div class="mb-3">
               <label for="name" class="form-label">Nama</label>
-              <input type="text" class="form-control" id="name" placeholder="Masukkan nama Anda">
+              <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama Anda">
             </div>
             <div class="mb-3">
               <label for="pengaduan" class="form-label">Pengaduan</label>
-              <textarea class="form-control" id="pengaduan" placeholder="Masukkan laporan Anda" rows="3"></textarea>
+              <textarea class="form-control" id="pengaduan" name="pengaduan"placeholder="Masukkan laporan Anda" rows="3"></textarea>
             </div>
             <div class="mb-3">
               <label for="tanggal" class="form-label">Tanggal Kejadian</label>
-              <input class="form-control" id="tanggal" type="date"></input>
+              <input class="form-control" id="tanggal" type="date" name="tanggal">
             </div>
             <div class="mb-3">
               <label for="formFile" class="form-label">Upload Bukti Pengaduan</label>
-              <input class="form-control" type="file" id="formFile">
+              <input class="form-control" type="file" id="file" name="file">
             </div>
-            <button onclick="simpan()" type="button" class="kirim btn col-md-4">Send</button>
+            <button onclick=posting()  type="button" class="kirim btn col-md-4">Send</button>
+
           </div>
         </div>
     </main>
 </body>
+
+
 </html>

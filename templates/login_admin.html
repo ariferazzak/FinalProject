@@ -146,7 +146,7 @@
                 },
                 success: function (response) {
                     if (response["result"] === "success") {
-                    $.cookie("mytoken", response["token"], {path: "/admin" });
+                    $.cookie("admintoken", response["token"], {path: "/" });
                     window.location.replace("/admin");
                     } else {
                         const alertPlaceholder = document.getElementById('liveAlertPlaceholder')

@@ -30,7 +30,34 @@
     rel="stylesheet">
 
   <!-- js -->
-  <script src="/static/user.js">
+  <script>
+    function update_profile() {
+      let name = $("#username_update").val();
+      let file = $("#picture")[0].files[0];
+      let form_data = new FormData();
+      form_data.append("file_give", file);
+      form_data.append("name_give", name);
+
+      $.ajax({
+        type: "POST",
+        url: "/update_profile",
+        data: form_data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          if (response["result"] === "success") {
+            alert(response["msg"]);
+            window.location.reload('/user');
+          }
+        },
+      });
+    }
+    function sign_out() {
+      $.removeCookie("mytoken", { path: "/" });
+      alert("Signed out!");
+      window.location.href = "/login/user";
+    }
   </script>
 </head>
 
@@ -48,13 +75,13 @@
             <ul class="dropdown-menu text-small shadow">
               <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit Profile</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="" onclick="sign_out()">Sign out</a></li>
+              <li><a class="dropdown-item" onclick="sign_out()">Sign out</a></li>
             </ul>
           </div>
           <button style="margin-right: 10px;" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div style="width: 300px; background-color: rgb(240, 149, 39);" class="offcanvas offcanvas-end side-content" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
+          <div style="width: 300px; background-color: rgb(240, 149, 39);" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
             <div class="offcanvas-header" style="justify-content:center;">
               <h4 class="header" style="padding-top: 10px;"><strong>DIGITAL SENSUS</strong></h4>
             </div>
@@ -81,7 +108,7 @@
                 </li>
                 <hr>
                 <li class="nav-item">
-                  <a class="nav-link" href="/pengaduan/{{ name_info.name }}">Pengaduan</a>
+                  <a class="nav-link" href="/homepage_user/pengaduan">Pengaduan</a>
                 </li>
                 <hr>
                 <li class="nav-item">
@@ -106,7 +133,7 @@
             <br>Pukul : 08.00 - 17.00 WIB</strong>
             </p>
             <div class="status d-grid gap-2 d-md-flex justify-content-md-start">
-              <a href="/status/{{ name_info.name }}" type="button" class="btn btn-lg px-4 me-md-2" style="background-color: rgb(209, 127, 27);">Cek Status Permohonan </a>
+              <a href="/homepage_user/status" type="button" class="btn btn-lg px-4 me-md-2" style="background-color: rgb(209, 127, 27);">Cek Status Permohonan </a>
             </div>
           </div>
         </div>
