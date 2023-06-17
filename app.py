@@ -10,7 +10,6 @@ import os
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['UPLOAD_FOLDER'] = {'./static/file_bukti', './static/profile_pics'}
 
 koneksi_mongodb = 'mongodb://finalproject387:finalproject@ac-vhmfphz-shard-00-00.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-01.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-02.86upttf.mongodb.net:27017/?ssl=true&replicaSet=atlas-wpdkgq-shard-0&authSource=admin&retryWrites=true&w=majority'
 client = MongoClient(koneksi_mongodb)
@@ -281,15 +280,15 @@ def kelahiran_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
         name = payload['name']
         
-        name = request.form.get('name')
-        tempat = request.form.get('tempat')
-        tanggal = request.form.get('tanggal')
-        ayah = request.form.get('ayah')
-        ibu = request.form.get('ibu')
-        no = request.form.get('no')
-        jk = request.form.get('jk')
+        name = request.form['name']
+        tempat = request.form['tempat']
+        tanggal = request.form['tanggal']
+        ayah = request.form['ayah']
+        ibu = request.form['ibu']
+        no = request.form['no']
+        jk = request.form['jenis-kelamin']
 
-        file = request.files["file"]
+        file = request.files["pdf"]
         
         file_path= ""
 

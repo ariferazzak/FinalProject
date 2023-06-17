@@ -413,54 +413,46 @@
                 </div>
                 <div class="content-body d-flex">
                     <div class="content-form">
-                        <form>
+                        <form action="/pelayanan/kelahiran" method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                               <label for="nama" class="form-label">Nama Bayi</label>
-                              <input type="nama" name="name" class="form-control" id="nama" placeholder="nama bayi">
+                              <input type="nama" name="name" class="form-control" id="nama" placeholder="nama bayi" required>
                             </div>
                             <div class="mb-3">
                               <label for="tempat" class="form-label">Tempat lahir</label>
-                              <input type="tempat" name="tempat" class="form-control" id="tempat" placeholder="tempat lahir">
+                              <input type="tempat" name="tempat" class="form-control" id="tempat" placeholder="tempat lahir" required>
                             </div>
                             <div class="mb-3">
                               <label for="tanggal" class="form-label">Tanggal lahir</label>
-                              <input type="tanggal" name="tanggal" class="form-control" id="tanggal" placeholder="tanggal lahir">
+                              <input type="tanggal" name="tanggal" class="form-control" id="tanggal" placeholder="tanggal lahir" required>
                             </div>
                             <div class="mb-3">
                               <label for="nama-bayi" class="form-label">Nama Orang Tua</label>
                               <div class="row">
                                 <div class="col">
-                                  <input type="text" name="ayah" class="form-control" id="ayah" placeholder="nama ayah">
+                                  <input type="text" name="ayah" class="form-control" id="ayah" placeholder="nama ayah" required>
                                 </div>
                                 <div class="col">
-                                  <input type="text" name="ibu" class="form-control" id="ibu" placeholder="nama ibu">
+                                  <input type="text" name="ibu" class="form-control" id="ibu" placeholder="nama ibu" required>
                                 </div>
                               </div>
                             </div>
                             <div class="mb-3">
                               <label for="no" class="form-label">Anak ke</label>
-                              <input type="no" name="no" class="form-control" id="no" placeholder="anak ke">
+                              <input type="no" name="no" class="form-control" id="no" placeholder="anak ke" required>
                             </div>
-                            <div class="mb-3 alignt">
+                            <div class="mb-3 align">
                               <label for="jenis-kelamin" class="form-label">Jenis kelamin</label>
-                              <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk" value="">
-                                  <label class="form-check-label" for="laki-laki">
-                                    Laki-Laki
-                                  </label>
-                              </div>
-                              <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk" value="">
-                                  <label class="form-check-label" for="perempuan">
-                                    Perempuan
-                                  </label>
-                              </div>
+                              <select id="jenis_kelamin" name="jenis-kelamin" required>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
+                              </select>
                             </div>
                             <div class="mb-3">
                                 <label for="input-file" class="form-label">Upload file persyaratan</label>
-                                <input type="file" name="file" class="form-control" id="input-file">
+                                <input type="file" name="pdf" class="form-control" id="input-file">
                             </div>
-                            <button onclick="save()" type="submit" class="btn">Simpan</button>
+                            <button type="submit" class="btn">Simpan</button>
                         </form>
                     </div>
                 </div>
@@ -469,5 +461,6 @@
     </div>
 
     <script src="/static/sidebar.js"></script>
+    
 </body>
 </html>
