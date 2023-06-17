@@ -69,6 +69,7 @@ def loginUser():
 @app.route('/register/user', methods=['POST'])
 def register_user():
     username_receive = request.form.get('username_give')
+    namalengkap_receive = request.form.get('namalengkap_give')
     nik_receive = request.form.get('nik_give')
     alamat_receive = request.form.get('alamat_give')
     pw_receive = request.form.get('pw_give')
@@ -76,7 +77,8 @@ def register_user():
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
 
     db.user.insert_one({
-        "name": username_receive, 
+        "name": username_receive,
+        "namalengkap": namalengkap_receive, 
         "nik": nik_receive,
         "alamat": alamat_receive,
         "pw": pw_hash,
