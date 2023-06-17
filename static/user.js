@@ -28,7 +28,7 @@ function update_profile() {
   let file = $("#picture")[0].files[0];
   let form_data = new FormData();
   form_data.append("file_give", file);
-  form_data.append("name_give", name);
+  form_data.append("longname_give", name);
 
   $.ajax({
     type: "POST",
@@ -40,7 +40,7 @@ function update_profile() {
     success: function (response) {
       if (response["result"] === "success") {
         alert(response["msg"]);
-        window.location.reload('/user');
+        window.location.reload();
       }
     },
   });
@@ -53,88 +53,3 @@ function sign_out() {
   window.location.href = "/login/user";
 }
 
-//surat kelahiran 
-// function save() {
-//     let name = $("#nama").val();
-//     let tempat = $("#tempat").val();
-//     let tanggal = $("#tanggal").val();
-//     let ayah = $("#ayah").val();
-//     let ibu = $("#ibu").val();
-//     let no = $("#no").val();
-//     let jk = $("#jk").val();
-//     let file = $("#formFile").val();
-//     $.ajax({
-//         type: "POST",
-//         url: "/pelayanan/kelahiran",
-//         data: {
-//           name : name,
-//           tempat : tempat,
-//           tanggal : tanggal,
-//           ayah : ayah,
-//           ibu : ibu,
-//           no : no,
-//           jk : jk,
-//           file : file
-//         },
-//         success: function (response) {
-//             alert("Permohonan Surat Telah Dibuat, Silahkan Cek Status!");
-//             window.location.replace("/homepage_user/status");
-//         },
-//         });
-// }
-
-// surat domisili
-function send() {
-  let name = $("#nama").val();
-  let ttl = $("#ttl").val();
-  let jk = $("#jk").val();
-  let work = $("#work").val();
-  let alamat = $("#alamat").val();
-  let file = $("#formFile").val();
-  $.ajax({
-      type: "POST",
-      url: "/pelayanan/domisili",
-      data: {
-        name : name,
-        ttl : ttl,
-        jk : jk,
-        work : work, 
-        alamat : alamat,
-        file : file,
-      },
-      success: function (response) {
-          alert("Permohonan Surat Telah Dibuat, Silahkan Cek Status!");
-          window.location.replace("/homepage_user/status");
-      },
-      });
-}
-
-// surat kematian
-function sent() {
-  let name = $("#nama").val();
-  let ttl = $("#ttl").val();
-  let agama = $("#agama").val();
-  let jk = $("#jk").val();
-  let tempat = $("#tempat").val();
-  let tanggal = $("#tanggal").val();
-  let penyebab = $("#penyebab").val();
-  let file = $("#formFile").val();
-  $.ajax({
-      type: "POST",
-      url: "/pelayanan/domisili",
-      data: {
-        name : name,
-        ttl : ttl,
-        agama : agama,
-        jk : jk, 
-        tempat : tempat,
-        tanggal : tanggal,
-        penyebab : penyebab,
-        file : file,
-      },
-      success: function (response) {
-          alert("Permohonan Surat Telah Dibuat, Silahkan Cek Status!");
-          window.location.replace("/homepage_user/status");
-      },
-      });
-}

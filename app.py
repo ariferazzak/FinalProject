@@ -67,6 +67,7 @@ def loginUser():
 @app.route('/register/user', methods=['POST'])
 def register_user():
     username_receive = request.form.get('username_give')
+    longname_receive = request.form.get('longname_give')
     nik_receive = request.form.get('nik_give')
     alamat_receive = request.form.get('alamat_give')
     pw_receive = request.form.get('pw_give')
@@ -74,6 +75,7 @@ def register_user():
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
 
     db.user.insert_one({
+        "long_name":longname_receive,
         "name": username_receive, 
         "nik": nik_receive,
         "alamat": alamat_receive,
@@ -233,10 +235,10 @@ def save_img():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
         name = payload['name']
-        name_receive = request.form["name_give"]
+        longname_receive = request.form["longname_give"]
         
         new_doc = {
-            "name": name_receive,
+            "long_name": longname_receive,
             }
         
         if "file_give" in request.files:
@@ -308,11 +310,11 @@ def kelahiran_post():
             "anak-ke":no,
             "jk" : jk,
             "file":file_path,
+            "status": "",
+            "surat" : "",
         }
-        print(doc)
         db.kelahiran.insert_one(doc)
-
-        return jsonify({"result": "success"})
+        return redirect('/pelayanan/kelahiran')
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
 
@@ -338,13 +340,13 @@ def domisili_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
         name = payload['name']
         
-        name = request.form.get('name')
-        ttl = request.form.get('ttl')
-        jk = request.form.get('jk')
-        work = request.form.get('work')
-        alamat = request.form.get('alamat')
+        name = request.form['name']
+        ttl = request.form['ttl']
+        jk = request.form['jenis-kelamin']
+        work = request.form['work']
+        alamat = request.form['alamat']
 
-        file = request.files["file"]
+        file = request.files["pdf"]
         
         file_path= ""
 
@@ -357,16 +359,16 @@ def domisili_post():
         
         doc={
             "nama" : name,
-            "ttl": ttl,
+            "ttl" : ttl,
+            "work" : work,
+            "alamat":alamat,
             "jk" : jk,
-            "work" :work,
-            "alamat" :alamat,
             "file":file_path,
+            "status": "",
+            "surat" : "",
         }
-        print(doc)
         db.domisili.insert_one(doc)
-
-        return jsonify({"result": "success"})
+        return redirect('/pelayanan/domisili')
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
     
@@ -392,39 +394,39 @@ def kematian_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
         name = payload['name']
         
-        name = request.form.get('name')
-        ttl = request.form.get('ttl')
-        agama = request.form.get('agama')
-        jk = request.form.get('jk')
-        tempat = request.form.get('tempat')
-        tanggal = request.form.get('tanggal')
-        penyebab = request.form.get('penyebab')
+        name = request.form['nama']
+        ttl = request.form['ttl']
+        agama = request.form['agama']
+        jk = request.form['jenis-kelamin']
+        tempat = request.form['tempat']
+        tanggal = request.form['tanggal']
+        penyebab = request.form['penyebab']
 
-        file = request.files["file"]
+        file = request.files["pdf"]
         
         file_path= ""
 
         if file:
             filename = secure_filename(file.filename)
             extension = filename.split(".")[-1]
-            file_path = f'Domisili-{name}.{extension}'
+            file_path = f'Kematian-{name}.{extension}'
             file.save("./static/syarat/" + file_path)
 
         
         doc={
             "nama" : name,
-            "ttl": ttl,
-            "agama" : agama,
+            "ttl" : ttl,
+            "agama" :agama,
             "jk" : jk,
             "tempat" : tempat,
-            "tanggal" : tanggal,
+            "tanggal": tanggal,
             "penyebab" : penyebab,
             "file":file_path,
+            "status": "",
+            "surat" : "",
         }
-        print(doc)
         db.kematian.insert_one(doc)
-
-        return jsonify({"result": "success"})
+        return redirect('/pelayanan/kematian')
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
 

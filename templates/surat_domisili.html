@@ -30,7 +30,7 @@
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="/static/user.js"></script>
+    
     <style>
         * {
             font-family: 'Lobster', cursive;
@@ -437,46 +437,36 @@
                 </div>
                 <div class="content-body d-flex">
                     <div class="content-form">
-                        <form>
+                        <form  action="/pelayanan/domisili" method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="nama" class="form-control" id="nama" placeholder="Masukkan Nama Lengkap">
+                                <input type="nama" name="name" class="form-control" id="nama" placeholder="Masukkan Nama Lengkap" required>
                             </div>
                             <div class="mb-3">
                                 <label for="tempat-tanggal-lahir" class="form-label">Tempat, Tanggal Lahir</label>
-                                <input type="tempat-tanggal-lahir" class="form-control" id="ttl"
-                                    placeholder="Masukkan tempat lahir">
+                                <input type="tempat-tanggal-lahir" class="form-control" id="ttl" name="ttl"
+                                    placeholder="Masukkan tempat lahir" required>
                             </div>
                             <div class="mb-3 alignt">
                                 <label for="jenis-kelamin" class="form-label">Jenis kelamin</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk"
-                                        value="">
-                                    <label class="form-check-label" for="laki-laki">
-                                        Laki-Laki
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk"
-                                        value="">
-                                    <label class="form-check-label" for="perempuan">
-                                        Perempuan
-                                    </label>
-                                </div>
+                                <select id="jenis_kelamin" name="jenis-kelamin" required>
+                                    <option value="laki-laki">Laki-laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="pekerjaan" class="form-label">Pekerjaan</label>
-                                <input type="pekerjaan" class="form-control" id="work"
-                                    placeholder="Masukkan Pekerjaan Anda">
+                                <input type="pekerjaan" class="form-control" id="work" name="work"
+                                    placeholder="Masukkan Pekerjaan Anda" required>
                             </div>
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat Domisili</label>
-                                <input type="alamat" class="form-control" id="alamat"
-                                    placeholder="Masukkan Tanggal Kematian">
+                                <input type="alamat" class="form-control" id="alamat" name="alamat"
+                                    placeholder="Masukkan Tanggal Kematian" required>
                             </div>
                             <div class="mb-3">
                                 <label for="input-file" class="form-label">Upload file persyaratan</label>
-                                <input type="file" id="file" class="form-control" id="input-file">
+                                <input type="file" id="file" class="form-control" id="input-file" name="pdf">
                             </div>
                             <button onclick="send()" type="submit" class="btn">Simpan</button>
                         </form>
@@ -487,6 +477,11 @@
     </div>
 
     <script src="/static/sidebar.js"></script>
+    <script>
+        function send(){
+            alert('Surat berhasil dibuat!')
+        }
+    </script>
 </body>
 
 </html>

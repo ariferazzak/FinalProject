@@ -43,7 +43,7 @@
               <img 
               src="../static/{{name_info.profile_pic_real}}" 
               alt="" width="50" height="50" class="rounded-circle me-2">
-              <strong style="font-size: 20px;">{{ name_info.name }}</strong>
+              <strong style="font-size: 20px;">@ {{ name_info.name }}</strong>
             </a>
             <ul class="dropdown-menu text-small shadow">
               <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit Profile</a></li>
@@ -100,7 +100,7 @@
             <img src="/static/berkas.svg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
           </div>
           <div class="content col-lg-6">
-            <h1 class="title-header text-body-emphasis lh-1 mb-3" >Hallo, {{ name_info.name }}</h1>
+            <h1 class="title-header text-body-emphasis lh-1 mb-3" >Hallo, {{ name_info.long_name }}</h1>
             <p class="lead">Salah satu inovasi layanan pengganti tatap muka, sehingga pemohon atau warga dapat mengurus dokumen dari rumah dan dapat mencetak mandiri. Pelayanan meliputi permohonan surat dan pengaduan.
             <br><strong> Jam Layanan Kerja : Senin - Jumat 
             <br>Pukul : 08.00 - 17.00 WIB</strong>
@@ -122,11 +122,11 @@
             </div>
             <div class="modal-body">
               <div class="mb-3">
-                <label for="pic" class="form-label">Ganti Foto Profil</label>
+                <label for="pic" class="form-label">Ubah Foto Profil</label>
                 <input type="file" class="form-control" id="picture">
               </div>
               <div class="mb-3">
-                <label for="name" class="form-label">Ganti Username</label>
+                <label for="name" class="form-label">Ubah Nama Lengkap</label>
                 <input type="text" class="form-control" id="username_update" placeholder="Nama anda">
               </div>
             </div>

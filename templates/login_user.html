@@ -140,6 +140,7 @@
         }
         
         function sign_up() {
+            let longname = $("#input-longname").val();
             let nik = $("#input-nik").val();
             let alamat = $("#alamat").val();
             let username = $("#username").val();
@@ -149,6 +150,7 @@
                 type: "POST",
                 url: "/register/user",
                 data: {
+                    longname_give:longname,
                     nik_give:nik,
                     alamat_give:alamat,
                     username_give: username,
@@ -186,6 +188,10 @@
                                     <p>Selamat Datang di Desa Kami | Silahkan Daftar</p>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="longname" class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="input-longname" placeholder="Masukan nama lengkap anda">
+                                </div>
+                                <div class="mb-3">
                                     <label for="nik" class="form-label">NIK</label>
                                     <input type="text" class="form-control" id="input-nik" placeholder="Masukkan NIK anda">
                                 </div>
@@ -197,6 +203,7 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" placeholder="Masukkan username anda">
+                                <p style="color: #737373; font-size: small;">Silahkan masukan nama pengguna dengan 8-10 huruf dan karakter (a-z,A-Z,1-9,!@#$%*_)</p>
                             </div>
                             <div class="mb-3">
                               <label for="password" class="form-label">Password</label>
@@ -221,7 +228,7 @@
         </div>
 
         <!-- tampilan sisi kanan -->
-        <div class="login-right w-50 h-100">
+        <div class="login-right w-50" style="height: 100vh;">
             <div id="carouselExampleFade" class="carousel slide carousel-fade">
                 <div class="carousel-inner">
                   <div class="carousel-item active">

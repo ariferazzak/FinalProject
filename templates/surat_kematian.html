@@ -30,7 +30,7 @@
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="/static/user.js"></script>
+    
     <style>
         * {
             font-family: 'Lobster', cursive;
@@ -437,57 +437,47 @@
                 </div>
                 <div class="content-body d-flex">
                     <div class="content-form">
-                        <form>
+                        <form action="/pelayanan/kematian" method="POST" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="nama" class="form-control" id="nama" placeholder="Masukkan Nama Lengkap">
+                                <input type="nama" class="form-control" id="nama" placeholder="Masukkan Nama Lengkap" name="nama" required>
                             </div>
                             <div class="mb-3">
                                 <label for="tempat-tanggal-lahir" class="form-label">Tempat, Tanggal Lahir</label>
                                 <input type="tempat-tanggal-lahir" class="form-control" id="ttl"
-                                    placeholder="Masukkan tempat lahir">
+                                    placeholder="Masukkan tempat dan tanggal lahir" name="ttl">
                             </div>
                             <div class="mb-3">
                                 <label for="agama" class="form-label">Agama</label>
-                                <input type="agama" class="form-control" id="agama" placeholder="Masukkan Agama">
+                                <input type="agama" class="form-control" id="agama" placeholder="Masukkan Agama" name="agama" required>
                             </div>
                             <div class="mb-3 alignt">
                                 <label for="jenis-kelamin" class="form-label">Jenis kelamin</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk"
-                                        value="">
-                                    <label class="form-check-label" for="laki-laki">
-                                        Laki-Laki
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk"
-                                        value="">
-                                    <label class="form-check-label" for="perempuan">
-                                        Perempuan
-                                    </label>
-                                </div>
+                                <select id="jenis_kelamin" name="jenis-kelamin" required>
+                                    <option value="laki-laki">Laki-laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
                             </div>
                             <div class="mb-3">
-                                <label for="tempat" class="form-label">Tempat Kematian</label>
+                                <label for="tempat" class="form-label">Tempat Meninggal</label>
                                 <input type="tempat" class="form-control" id="tempat"
-                                    placeholder="Masukkan Tempat Kematian">
+                                    placeholder="Masukkan Tempat Kematian" name="tempat" required>
                             </div>
                             <div class="mb-3">
-                                <label for="tanggal" class="form-label">Tanggal Kematian</label>
+                                <label for="tanggal" class="form-label">Tanggal Meninggal</label>
                                 <input type="tanggal" class="form-control" id="tanggal"
-                                    placeholder="Masukkan Tanggal Kematian">
+                                    placeholder="Masukkan Tanggal Kematian" name="tanggal" required>
                             </div>
                             <div class="mb-3">
-                                <label for="penyebab" class="form-label">Penyebab Kematian</label>
+                                <label for="penyebab" class="form-label">Penyebab Meninggal</label>
                                 <input type="penyebab" class="form-control" id="penyebab"
-                                    placeholder="Masukkan Penyebab Kematian">
+                                    placeholder="Masukkan Penyebab Kematian" name="penyebab" required>
                             </div>
                             <div class="mb-3">
                                 <label for="input-file" class="form-label">Upload file persyaratan</label>
-                                <input type="file" class="form-control" id="input-file">
+                                <input type="file" class="form-control" id="input-file" name="pdf">
                             </div>
-                            <button type="submit" class="btn">Simpan</button>
+                            <button onclick="sent()" type="submit" class="btn">Simpan</button>
                         </form>
                     </div>
                 </div>
@@ -496,6 +486,11 @@
     </div>
 
     <script src="/static/sidebar.js"></script>
+    <script>
+        function sent(){
+        alert('Surat berhasil dibuat!')
+    }
+    </script>
 </body>
 
 </html>
