@@ -264,6 +264,16 @@ def kelahiran():
     name_info = db.user.find_one()
     return render_template('surat_kelahiran.html', name_info=name_info)
 
+@app.route('/pelayanan/domisili', methods=['GET'])
+def domisili():
+    name_info = db.user.find_one()
+    return render_template('surat_domisili.html', name_info=name_info)
+
+@app.route('/pelayanan/kematian', methods=['GET'])
+def kematian():
+    name_info = db.user.find_one()
+    return render_template('surat_kematian.html', name_info=name_info)
+
 @app.route('/resume/kelahiran',methods=['GET','POST'])
 def resume_kelahiran():
     return render_template('resume_kelahiran.html')
