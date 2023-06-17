@@ -226,7 +226,7 @@ def status():
             'name': payload["name"]})
         return render_template('status.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for('loginUser'))
+        return redirect(url_for('home_user'))
     
 @app.route('/update_profile', methods=['POST'])
 def save_img():
@@ -250,7 +250,7 @@ def save_img():
             new_doc["profile_pic_real"] = file_path
         
         db.user.update_one(
-            {"nik": payload['nik']}, 
+            {"name": payload['name']}, 
             {"$set": new_doc}
             )
         return jsonify({
@@ -261,8 +261,173 @@ def save_img():
 
 @app.route('/pelayanan/kelahiran', methods=['GET'])
 def kelahiran():
-    name_info = db.user.find_one()
-    return render_template('surat_kelahiran.html', name_info=name_info)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+        )
+        name_info = db.user.find_one({
+            'name': payload["name"]})
+        return render_template('surat_kelahiran.html', name_info=name_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
+
+@app.route('/pelayanan/kelahiran', methods=['POST'])
+def kelahiran_post():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        name = payload['name']
+        
+        name = request.form.get('name')
+        tempat = request.form.get('tempat')
+        tanggal = request.form.get('tanggal')
+        ayah = request.form.get('ayah')
+        ibu = request.form.get('ibu')
+        no = request.form.get('no')
+        jk = request.form.get('jk')
+
+        file = request.files["file"]
+        
+        file_path= ""
+
+        if file:
+            filename = secure_filename(file.filename)
+            extension = filename.split(".")[-1]
+            file_path = f'Kelahiran-{name}.{extension}'
+            file.save("./static/syarat/" + file_path)
+
+        
+        doc={
+            "nama_bayi" : name,
+            "tempat_lahir": tempat,
+            "tanggal_lahir": tanggal,
+            "ayah":ayah,
+            "ibu":ibu,
+            "anak-ke":no,
+            "jk" : jk,
+            "file":file_path,
+        }
+        print(doc)
+        db.kelahiran.insert_one(doc)
+
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
+
+@app.route('/pelayanan/domisili', methods=['GET'])
+def domisili():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+        )
+        name_info = db.user.find_one({
+            'name': payload["name"]})
+        return render_template('surat_domisili.html', name_info=name_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
+    
+@app.route('/pelayanan/domisili', methods=['POST'])
+def domisili_post():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        name = payload['name']
+        
+        name = request.form.get('name')
+        ttl = request.form.get('ttl')
+        jk = request.form.get('jk')
+        work = request.form.get('work')
+        alamat = request.form.get('alamat')
+
+        file = request.files["file"]
+        
+        file_path= ""
+
+        if file:
+            filename = secure_filename(file.filename)
+            extension = filename.split(".")[-1]
+            file_path = f'Domisili-{name}.{extension}'
+            file.save("./static/syarat/" + file_path)
+
+        
+        doc={
+            "nama" : name,
+            "ttl": ttl,
+            "jk" : jk,
+            "work" :work,
+            "alamat" :alamat,
+            "file":file_path,
+        }
+        print(doc)
+        db.domisili.insert_one(doc)
+
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
+    
+@app.route('/pelayanan/kematian', methods=['GET'])
+def kematian():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+        )
+        name_info = db.user.find_one({
+            'name': payload["name"]})
+        return render_template('surat_kematian.html', name_info=name_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
+
+@app.route('/pelayanan/kematian', methods=['POST'])
+def kematian_post():
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        name = payload['name']
+        
+        name = request.form.get('name')
+        ttl = request.form.get('ttl')
+        agama = request.form.get('agama')
+        jk = request.form.get('jk')
+        tempat = request.form.get('tempat')
+        tanggal = request.form.get('tanggal')
+        penyebab = request.form.get('penyebab')
+
+        file = request.files["file"]
+        
+        file_path= ""
+
+        if file:
+            filename = secure_filename(file.filename)
+            extension = filename.split(".")[-1]
+            file_path = f'Domisili-{name}.{extension}'
+            file.save("./static/syarat/" + file_path)
+
+        
+        doc={
+            "nama" : name,
+            "ttl": ttl,
+            "agama" : agama,
+            "jk" : jk,
+            "tempat" : tempat,
+            "tanggal" : tanggal,
+            "penyebab" : penyebab,
+            "file":file_path,
+        }
+        print(doc)
+        db.kematian.insert_one(doc)
+
+        return jsonify({"result": "success"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('home_user'))
 
 @app.route('/resume/kelahiran',methods=['GET','POST'])
 def resume_kelahiran():

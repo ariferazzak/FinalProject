@@ -30,34 +30,7 @@
     rel="stylesheet">
 
   <!-- js -->
-  <script>
-    function update_profile() {
-      let name = $("#username_update").val();
-      let file = $("#picture")[0].files[0];
-      let form_data = new FormData();
-      form_data.append("file_give", file);
-      form_data.append("name_give", name);
-
-      $.ajax({
-        type: "POST",
-        url: "/update_profile",
-        data: form_data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-          if (response["result"] === "success") {
-            alert(response["msg"]);
-            window.location.reload('/user');
-          }
-        },
-      });
-    }
-    function sign_out() {
-      $.removeCookie("mytoken", { path: "/" });
-      alert("Signed out!");
-      window.location.href = "/login/user";
-    }
+  <script src="/static/user.js">
   </script>
 </head>
 
@@ -98,11 +71,11 @@
                       Pelayanan
                     </a>
                     <ul class="dropdown-menu text-small shadow">
-                      <li><a class="dropdown-item" href="#">Surat Domisili</a></li>
+                      <li><a class="dropdown-item" href="/pelayanan/domisili">Surat Domisili</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Surat Kelahiran</a></li>
+                      <li><a class="dropdown-item" href="/pelayanan/kelahiran">Surat Kelahiran</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Surat Kematian</a></li>
+                      <li><a class="dropdown-item" href="/pelayanan/kematian">Surat Kematian</a></li>
                     </ul>
                   </div>
                 </li>

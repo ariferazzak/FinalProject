@@ -20,7 +20,10 @@
 
     <!-- Link jquery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="/static/user.js"></script>
     <style>
         *{
             font-family: 'Lobster', cursive;
@@ -355,25 +358,25 @@
 
             <div class="main">
                 <div class="list-item">
-                    <a href="" >
+                    <a href="/pelayanan/kelahiran" >
                         <img src="/static/folders.png" alt="" class="icon">
                         <span class="description">Surat Kelahiran</span>
                     </a>
                 </div>
                 <div class="list-item">
-                    <a href="" >
+                    <a href="/pelayanan/kematian" >
                         <img src="/static/file.png" alt="" class="icon">
                         <span class="description">Surat Kematian</span>
                     </a>
                 </div>
                 <div class="list-item">
-                    <a href="" >
+                    <a href="/pelayanan/domisili" >
                         <img src="/static/folder.png" alt="" class="icon">
                         <span class="description">Surat Domisili</span>
                     </a>
                 </div>
                 <div class="list-item">
-                    <a href="/login/user" >
+                    <a onclick="sign_out()" >
                         <img src="/static/logout.png" alt="" class="icon">
                         <span class="description">Logout</span>
                     </a>
@@ -400,7 +403,7 @@
                     <ul class="dropdown-menu text-small shadow">
                       <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit Profile</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="/login/user">Sign out</a></li>
+                      <li><a class="dropdown-item" href="">Sign out</a></li>
                     </ul>
                   </div>
             </div>
@@ -413,41 +416,41 @@
                         <form>
                             <div class="mb-3">
                               <label for="nama" class="form-label">Nama Bayi</label>
-                              <input type="nama" class="form-control" id="nama" placeholder="nama bayi">
+                              <input type="nama" name="name" class="form-control" id="nama" placeholder="nama bayi">
                             </div>
                             <div class="mb-3">
                               <label for="tempat" class="form-label">Tempat lahir</label>
-                              <input type="tempat" class="form-control" id="tempat" placeholder="tempat lahir">
+                              <input type="tempat" name="tempat" class="form-control" id="tempat" placeholder="tempat lahir">
                             </div>
                             <div class="mb-3">
                               <label for="tanggal" class="form-label">Tanggal lahir</label>
-                              <input type="tanggal" class="form-control" id="tanggal" placeholder="tanggal lahir">
+                              <input type="tanggal" name="tanggal" class="form-control" id="tanggal" placeholder="tanggal lahir">
                             </div>
                             <div class="mb-3">
-                              <label for="nama-bayi" class="form-label">Nama Bayi</label>
+                              <label for="nama-bayi" class="form-label">Nama Orang Tua</label>
                               <div class="row">
                                 <div class="col">
-                                  <input type="text" class="form-control" placeholder="nama ayah">
+                                  <input type="text" name="ayah" class="form-control" id="ayah" placeholder="nama ayah">
                                 </div>
                                 <div class="col">
-                                  <input type="text" class="form-control" placeholder="nama ibu">
+                                  <input type="text" name="ibu" class="form-control" id="ibu" placeholder="nama ibu">
                                 </div>
                               </div>
                             </div>
                             <div class="mb-3">
                               <label for="no" class="form-label">Anak ke</label>
-                              <input type="no" class="form-control" id="no" placeholder="anak ke">
+                              <input type="no" name="no" class="form-control" id="no" placeholder="anak ke">
                             </div>
                             <div class="mb-3 alignt">
                               <label for="jenis-kelamin" class="form-label">Jenis kelamin</label>
                               <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="laki-laki" value="">
+                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk" value="">
                                   <label class="form-check-label" for="laki-laki">
                                     Laki-Laki
                                   </label>
                               </div>
                               <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="perempuan" value="">
+                                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk" value="">
                                   <label class="form-check-label" for="perempuan">
                                     Perempuan
                                   </label>
@@ -455,9 +458,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="input-file" class="form-label">Upload file persyaratan</label>
-                                <input type="file" class="form-control" id="input-file">
+                                <input type="file" name="file" class="form-control" id="input-file">
                             </div>
-                            <button type="submit" class="btn">Simpan</button>
+                            <button onclick="save()" type="submit" class="btn">Simpan</button>
                         </form>
                     </div>
                 </div>

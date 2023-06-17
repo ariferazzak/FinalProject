@@ -28,7 +28,9 @@
     <!-- Link jquery -->
     <script src="https://code.jquery.com/jquery-3.7.0.js"
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="/static/user.js"></script>
     <style>
         * {
             font-family: 'Lobster', cursive;
@@ -376,25 +378,25 @@
 
             <div class="main">
                 <div class="list-item">
-                    <a href="">
+                    <a href="/pelayanan/kelahiran">
                         <img src="/static/folders.png" alt="" class="icon">
                         <span class="description">Surat Kelahiran</span>
                     </a>
                 </div>
                 <div class="list-item">
-                    <a href="">
+                    <a href="/pelayanan/kematian">
                         <img src="/static/file.png" alt="" class="icon">
                         <span class="description">Surat Kematian</span>
                     </a>
                 </div>
                 <div class="list-item">
-                    <a href="">
+                    <a href="/pelayanan/domisili">
                         <img src="/static/folder.png" alt="" class="icon">
                         <span class="description">Surat Domisili</span>
                     </a>
                 </div>
                 <div class="list-item">
-                    <a href="/login/user">
+                    <a onclick="sign_out()">
                         <img src="/static/logout.png" alt="" class="icon">
                         <span class="description">Logout</span>
                     </a>
@@ -452,14 +454,14 @@
                             <div class="mb-3 alignt">
                                 <label for="jenis-kelamin" class="form-label">Jenis kelamin</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="laki-laki"
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk"
                                         value="">
                                     <label class="form-check-label" for="laki-laki">
                                         Laki-Laki
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="perempuan"
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="jk"
                                         value="">
                                     <label class="form-check-label" for="perempuan">
                                         Perempuan
