@@ -39,10 +39,6 @@ def home_admin():
         return render_template('profile_admin.html', name_info=name_info, data_masyarakat=data_masyarakat)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginAdmin'))
-<<<<<<< HEAD
-
-=======
->>>>>>> 1153601169afdcdff1578b5f369e6942b1d22186
 
 @app.route('/user', methods=['GET'])
 def home_user():
@@ -153,11 +149,7 @@ def pengaduan():
         return render_template('pengaduan.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 1153601169afdcdff1578b5f369e6942b1d22186
 @app.route('/posting',methods=['POST'])
 def pengaduan_post():
     token_receive = request.cookies.get(TOKEN_KEY)
