@@ -40,7 +40,7 @@ function update_profile() {
     success: function (response) {
       if (response["result"] === "success") {
         alert(response["msg"]);
-        window.location.reload('/user');
+        window.location.reload();
       }
     },
   });

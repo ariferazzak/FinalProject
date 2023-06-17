@@ -48,8 +48,10 @@ def home_user():
             SECRET_KEY, 
             algorithms=["HS256"],
         )
+        print(payload)
         name_info = db.user.find_one({
             'name': payload["name"]})
+        print(name_info)
         return render_template('user.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
