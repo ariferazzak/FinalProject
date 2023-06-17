@@ -53,6 +53,11 @@
         },
       });
     }
+    function sign_out() {
+      $.removeCookie("mytoken", { path: "/" });
+      alert("Signed out!");
+      window.location.href = "/login/user";
+    }
   </script>
 </head>
 
@@ -70,7 +75,7 @@
             <ul class="dropdown-menu text-small shadow">
               <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit Profile</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/login/user">Sign out</a></li>
+              <li><a class="dropdown-item" onclick="sign_out()">Sign out</a></li>
             </ul>
           </div>
           <button style="margin-right: 10px;" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight" aria-label="Toggle navigation">

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for, send_file
 from pymongo import MongoClient
 import jwt
 import datetime
@@ -6,17 +6,19 @@ from datetime import datetime, timedelta
 import hashlib
 from werkzeug.utils import secure_filename
 from bson import ObjectId
+import os
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['UPLOAD_FOLDER'] = {'./static/file_bukti', './static/profile_pics'}
 
-koneksi_mongodb = 'mongodb+srv://finalproject387:finalproject@cluster0.86upttf.mongodb.net/?retryWrites=true&w=majority'
+koneksi_mongodb = 'mongodb://finalproject387:finalproject@ac-vhmfphz-shard-00-00.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-01.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-02.86upttf.mongodb.net:27017/?ssl=true&replicaSet=atlas-wpdkgq-shard-0&authSource=admin&retryWrites=true&w=majority'
 client = MongoClient(koneksi_mongodb)
 db = client.dbfinal_project
 
 SECRET_KEY = 'finalProject'
 TOKEN_KEY = 'mytoken'
+TOKEN_ADMIN = 'admintoken'
 
 @app.route('/')
 def homeLogin():
@@ -24,11 +26,20 @@ def homeLogin():
 
 @app.route('/admin', methods=['GET'])
 def home_admin():
+    token_receive = request.cookies.get(TOKEN_ADMIN)
     data_masyarakat = db.user.find()
-    return render_template(
-        'profile_admin.html',
-         data_masyarakat = data_masyarakat,
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
         )
+        name_info = db.admin.find_one({
+            'id': payload["id"]})
+        return render_template('profile_admin.html', name_info=name_info, data_masyarakat=data_masyarakat)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('loginAdmin'))
+
 
 @app.route('/user', methods=['GET'])
 def home_user():
@@ -37,10 +48,10 @@ def home_user():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms="HS256",
+            algorithms=["HS256"],
         )
         name_info = db.user.find_one({
-            'name': payload.get('name')})
+            'name': payload["name"]})
         return render_template('user.html', name_info=name_info)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginUser'))
@@ -127,41 +138,66 @@ def login_user():
 
 @app.route('/homepage_user/pengaduan',methods=['GET'])
 def pengaduan():
-    name_info = db.user.find_one()
-    return render_template('pengaduan.html', name_info=name_info)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+        )
+        name_info = db.user.find_one({
+            'name': payload["name"]})
+        return render_template('pengaduan.html', name_info=name_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('loginUser'))
 
 @app.route('/posting',methods=['POST'])
 def pengaduan_post():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
-        name = payload['name']
-        username_receive = request.form.get('username_give')
-        pengaduan_receive = request.form.get('pengaduan_give')
-        file_path =''
-        kejadian_receive = request.form.get('kejadian_give')
-        date_receive = request.form['date_give']
-        file = request.files["file_give"]
-
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        name_info = db.user.find_one({
+            'name': payload["name"]})
+        name = request.form.get('name')
+        pengaduan = request.form.get('pengaduan')
+        tanggal = request.form.get('tanggal')
+        tanggal_upload = request.form['today']
+        file = request.files["file"]
+        
+        file_path= ""
         if file:
             filename = secure_filename(file.filename)
             extension = filename.split(".")[-1]
-            file_path = f"file_bukti/{name}.{extension}"
-            file.save("./static/" + file_path)
+            today = datetime.now()
+            mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+            file_path = f'pengaduan-{mytime}.{extension}'
+            file.save("./static/bukti/" + file_path)
+
         
         doc={
-        "name" : username_receive,
-        "pengaduan": pengaduan_receive,
-        "tanggal_kejadian": kejadian_receive,
-        "file":file_path,
-        "date":date_receive}
-
+            "name" : name,
+            "pengaduan": pengaduan,
+            "tanggal_kejadian": tanggal,
+            "file":file_path,
+            "tanggal_upload":tanggal_upload
+        }
+        print(doc)
         db.pengaduan.insert_one(doc)
 
         return jsonify({"result": "success"})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
+
+@app.route ('/download_pengaduan/<file>', methods=['GET'])
+def download_pengaduan(file):
+    path= "./static/bukti/"
+    file_path = os.path.join(path, file)  
+    if os.path.isfile(file_path):
+        return send_file(file_path, as_attachment=True)
     
+    else:
+        return 'File not found'
+
 @app.route ('/posting/pengaduan', methods=['GET'])
 def pengaduan_get():
     username_receive = request.args.get('username_give')
@@ -180,8 +216,18 @@ def pengaduan_get():
 
 @app.route('/homepage_user/status',methods=['GET'])
 def status():
-    name_info = db.user.find_one()
-    return render_template('status.html', name_info=name_info)
+    token_receive = request.cookies.get(TOKEN_KEY)
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"],
+        )
+        name_info = db.user.find_one({
+            'name': payload["name"]})
+        return render_template('status.html', name_info=name_info)
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return redirect(url_for('loginUser'))
     
 @app.route('/update_profile', methods=['POST'])
 def save_img():
@@ -219,6 +265,17 @@ def kelahiran():
     name_info = db.user.find_one()
     return render_template('surat_kelahiran.html', name_info=name_info)
 
+@app.route('/resume/kelahiran',methods=['GET','POST'])
+def resume_kelahiran():
+    return render_template('resume_kelahiran.html')
+
+@app.route('/resume/domisili',methods=['GET','POST'])
+def resume_domisili():
+    return render_template('resume_domisili.html')
+
+@app.route('/resume/kematian',methods=['GET','POST'])
+def resume_kematian():
+    return render_template('resume_kematian.html')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
