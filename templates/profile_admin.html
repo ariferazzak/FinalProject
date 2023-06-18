@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+   
     <script src="/static/post.js"></script>
     <script>
       $(document).ready(function () {
@@ -264,6 +265,10 @@
               shakeDown 0.2s ease 0.8s forwards
       }
 
+      input[type="file"]{
+        display: none;
+      }
+
       @keyframes moveUpThenDown {
           0% {
               top: 0;
@@ -358,7 +363,7 @@
             <div class="main">
               <div class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <div class="list-item nav-item" role="presentation">
-                    <a href="" id="pills-rakyat-tab" data-bs-toggle="pill" data-bs-target="#pills-rakyat" type="button" role="tab" aria-controls="pills-rakyat" aria-selected="true">
+                    <a href="" id="pills-rakyat-tab" data-bs-toggle="pill" data-bs-target="#pills-rakyat" type="button" role="tab" aria-controls="pills-rakyat" aria-selected="false">
                         <img src="/static/folders.png" alt="" class="icon">
                         <span class="description">Data Masyarakat</span>
                     </a>
@@ -405,7 +410,7 @@
                           {% for data in data_masyarakat %}
                           <tr>
                             <th scope="row">1</th>
-                            <td>{{ data.name }}</td>
+                            <td>{{ data.long_name }}</td>
                             <td>{{ data.nik }}</td>
                             <td>{{ data.alamat }}</td>
                             <td><button class="btn btn-outline-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -437,25 +442,42 @@
                                 <th scope="col">Jenis Kelamin</th>
                                 <th scope="col">Pekerjaan</th>
                                 <th scope="col">Agama</th>
-                                <th scope="col">Status Perkawinan</th>
-                                <th scope="col">Warga Negara</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">File Surat</th>
+                                <th scope="col">File Syarat</th>
+                                <th scope="col">Hasil Surat</th>
+                                <th scope="col">Upload Surat</th>
+                                <th scope="col">Validasi</th>
                               </tr>
                             </thead>
                             <tbody>
+                              {% for domisili in data_domisili %}
                               <tr>
                                 <th scope="row">1</th>
-                                <td>Rizki</td>
-                                <td>Jakarta, 20 Oktober 1999</td>
-                                <td>Laki-Laki</td>
-                                <td>Mahasiswa</td>
-                                <td>Islam</td>
-                                <td>Belum menikah</td>
-                                <td>Indonesia</td>
-                                <td style="color:rgb(60, 212, 30);">disetujui</td>
-                                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="#">unduh surat</a></td>
+                                <td>{{ domisili.nama }}</td>
+                                <td>{{ domisili.ttl }}</td>
+                                <td>{{ domisili.jk }}</td>
+                                <td>{{ domisili.work }}</td>
+                                <td>{{ domisili.alamat }}</td>
+                                <td><a class="btn btn-outline-success" href="#">Lihat File</a></td>
+                                <td>
+                                  <form>
+                                    <a class="btn btn-outline-dark" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                    </svg></a>
+                                  </form>
+                                </td>
+                                <td>
+                                  <form>
+                                    <input type="file" id="upload" name="pdf"/>
+                                    <label class="btn btn-outline-danger" for="upload"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                    </svg></label>
+                                  </form>
+                                </td>
+                                <td><button class="btn btn-outline-dark">Validasi</button></td>
                               </tr>
+                              {% endfor %}
                             </tbody>
                           </table>
                         </div>
@@ -468,22 +490,45 @@
                                 <th scope="col">Tempat Lahir</th>
                                 <th scope="col">Tanggal Lahir</th>
                                 <th scope="col">Jenis Kelamin</th>
+                                <th scope="col">Anak ke-</th>
                                 <th scope="col">Nama Orang Tua</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">File Surat</th>
+                                <th scope="col">File Syarat</th>
+                                <th scope="col">Hasil Surat</th>
+                                <th scope="col">Upload Surat</th>
+                                <th scope="col">Validasi</th>
                               </tr>
                             </thead>
                             <tbody>
+                              {% for birth in data_kelahiran %}
                               <tr>
                                 <th scope="row">1</th>
-                                <td>Layla</td>
-                                <td>Jakarta</td>
-                                <td>19 September 2023</td>
-                                <td>Perempuan</td>
-                                <td>Rizki & Cindi</td>
-                                <td style="color:rgb(60, 212, 30);">disetujui</td>
-                                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="#">unduh surat</a></td>
+                                <td>{{ birth.nama_bayi }}</td>
+                                <td>{{ birth.tempat_lahir }}</td>
+                                <td>{{ birth.tanggal_lahir }}</td>
+                                <td>{{ birth.jk }}</td>
+                                <td>{{ birth.anak }}</td>
+                                <td>{{ birth.ayah }} & {{ birth.ibu }}</td>
+                                <td><a class="btn btn-outline-success" href="#">Lihat File</a></td>
+                                <td>
+                                  <form>
+                                    <a class="btn btn-outline-dark" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                    </svg></a>
+                                  </form>
+                                </td>
+                                <td>
+                                  <form>
+                                    <input type="file" id="upload" name="pdf"/>
+                                    <label class="btn btn-outline-danger" for="upload"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                    </svg></label>
+                                  </form>
+                                </td>
+                                <td><button class="btn btn-outline-dark">Validasi</button></td>
                               </tr>
+                              {% endfor %}
                             </tbody>
                           </table>
                         </div>
@@ -496,28 +541,47 @@
                                 <th scope="col">TTL</th>
                                 <th scope="col">Agama</th>
                                 <th scope="col">Jenis Kelamin</th>
-                                <th scope="col">Status Perkawinan</th>
                                 <th scope="col">Tanggal Meninggal</th>
                                 <th scope="col">Tempat Meninggal</th>
                                 <th scope="col">Penyebab</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">File Surat</th>
+                                <th scope="col">File Syarat</th>
+                                <th scope="col">Hasil Surat</th>
+                                <th scope="col">Upload Surat</th>
+                                <th scope="col">Validasi</th>
                               </tr>
                             </thead>
                             <tbody>
+                              {% for kematian in data_kematian %}
                               <tr>
                                 <th scope="row">1</th>
-                                <td>Aulia</td>
-                                <td>Bogor, 21 Desember 2001</td>
-                                <td>Islam</td>
-                                <td>Perempuan</td>
-                                <td>Belum Menikah</td>
-                                <td>21 Mei 2020</td>
-                                <td>Jakarta</td>
-                                <td>Sakit</td>
-                                <td style="color:rgb(60, 212, 30);">disetujui</td>
-                                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="#">unduh surat</a></td>
+                                <td>{{ kematian.nama }}</td>
+                                <td>{{ kematian.ttl }}</td>
+                                <td>{{ kematian.agama }}</td>
+                                <td>{{ kematian.jk }}</td>
+                                <td>{{ kematian.tanggal }}</td>
+                                <td>{{ kematian.tempat }}</td>
+                                <td>{{ kematian.penyebab }}</td>
+                                <td><a class="btn btn-outline-success" href="#">Lihat File</a></td>
+                                <td>
+                                  <form>
+                                    <a class="btn btn-outline-dark" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                    </svg></a>
+                                  </form>
+                                </td>
+                                <td>
+                                  <form>
+                                    <input type="file" id="upload" name="pdf"/>
+                                    <label class="btn btn-outline-danger" for="upload"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                                      <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                      <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                    </svg></label>
+                                  </form>
+                                </td>
+                                <td><button class="btn btn-outline-dark">Validasi</button></td>
                               </tr>
+                              {% endfor %}
                             </tbody>
                           </table>
                         </div>

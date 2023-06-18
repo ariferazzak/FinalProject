@@ -53,3 +53,63 @@ function sign_out() {
   window.location.href = "/login/user";
 }
 
+// batal surat kelahiran
+
+function batal(birthId) {
+  $.ajax({
+    url: '/user/delete_birth/' + birthId,
+    type: 'POST',
+    success: function(response) {
+      if (response.result === 'success') {
+        alert('Permohonan berhasil dibatalkan');
+        window.location.reload();
+      } else {
+        console.log('Failed to delete :', response.msg);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.log('Error:', error);
+    }
+  });
+}
+
+// batal surat domisili
+
+function hapus(domisiliId) {
+  $.ajax({
+    url: '/user/delete_domisili/' + domisiliId,
+    type: 'POST',
+    success: function(response) {
+      if (response.result === 'success') {
+        alert('Permohonan berhasil dibatalkan');
+        window.location.reload();
+      } else {
+        console.log('Failed to delete :', response.msg);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.log('Error:', error);
+    }
+  });
+}
+
+// batal surat domisili
+
+function cancel(dieId) {
+  $.ajax({
+    url: '/user/delete_die/' + dieId,
+    type: 'POST',
+    success: function(response) {
+      if (response.result === 'success') {
+        alert('Permohonan berhasil dibatalkan');
+        window.location.reload();
+      } else {
+        console.log('Failed to delete :', response.msg);
+      }
+    },
+    error: function(xhr, status, error) {
+      console.log('Error:', error);
+    }
+  });
+}
+

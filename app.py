@@ -27,6 +27,9 @@ def homeLogin():
 def home_admin():
     token_receive = request.cookies.get(TOKEN_ADMIN)
     data_masyarakat = db.user.find()
+    data_kelahiran = db.kelahiran.find()
+    data_kematian = db.kematian.find()
+    data_domisili = db.domisili.find()
     try:
         payload = jwt.decode(
             token_receive, 
@@ -35,7 +38,13 @@ def home_admin():
         )
         name_info = db.admin.find_one({
             'id': payload["id"]})
-        return render_template('profile_admin.html', name_info=name_info, data_masyarakat=data_masyarakat)
+        return render_template(
+            'profile_admin.html', 
+            name_info=name_info, 
+            data_masyarakat=data_masyarakat,
+            data_kelahiran = data_kelahiran,
+            data_kematian = data_kematian,
+            data_domisili = data_domisili)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginAdmin'))
 
@@ -77,6 +86,7 @@ def register_user():
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
 
     db.user.insert_one({
+        "long_name" : longname_receive,
         "name": username_receive, 
         "nik": nik_receive,
         "alamat": alamat_receive,
@@ -218,6 +228,10 @@ def pengaduan_get():
 @app.route('/homepage_user/status',methods=['GET'])
 def status():
     token_receive = request.cookies.get(TOKEN_KEY)
+    status_kelahiran = db.kelahiran.find()
+    status_domisili = db.domisili.find()
+    status_kematian = db.kematian.find()
+
     try:
         payload = jwt.decode(
             token_receive, 
@@ -226,7 +240,12 @@ def status():
         )
         name_info = db.user.find_one({
             'name': payload["name"]})
-        return render_template('status.html', name_info=name_info)
+        return render_template(
+            'status.html', 
+            name_info=name_info, 
+            status_kelahiran = status_kelahiran,
+            status_domisili = status_domisili,
+            status_kematian = status_kematian)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
     
@@ -308,10 +327,10 @@ def kelahiran_post():
             "tanggal_lahir": tanggal,
             "ayah":ayah,
             "ibu":ibu,
-            "anak-ke":no,
+            "anak":no,
             "jk" : jk,
             "file":file_path,
-            "status": "",
+            "status": "Process",
             "surat" : "",
         }
         db.kelahiran.insert_one(doc)
@@ -365,7 +384,7 @@ def domisili_post():
             "alamat":alamat,
             "jk" : jk,
             "file":file_path,
-            "status": "",
+            "status": "Process",
             "surat" : "",
         }
         db.domisili.insert_one(doc)
@@ -423,7 +442,7 @@ def kematian_post():
             "tanggal": tanggal,
             "penyebab" : penyebab,
             "file":file_path,
-            "status": "",
+            "status": "Process",
             "surat" : "",
         }
         db.kematian.insert_one(doc)
@@ -442,6 +461,83 @@ def resume_domisili():
 @app.route('/resume/kematian',methods=['GET','POST'])
 def resume_kematian():
     return render_template('resume_kematian.html')
+
+@app.route('/user/delete_birth/<birth_id>', methods=['POST'])
+def delete_birth(birth_id):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"]
+        )
+        
+        # Check if the user is an admin
+        if payload.get('name'):
+            # Delete the user from the database
+            result = db.kelahiran.delete_one({"_id": ObjectId(birth_id)})
+           
+            if result.deleted_count > 0:
+                return jsonify({"result": "success"})
+            else:
+                return jsonify({"result": "fail", "msg": "failed to delete"})
+        else:
+            return jsonify({"result": "fail", "msg": "Unauthorized access"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "fail", "msg": "Invalid token"})
+
+@app.route('/user/delete_domisili/<domisili_id>', methods=['POST'])
+def delete_domisili(domisili_id):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"]
+        )
+        
+        # Check if the user is an admin
+        if payload.get('name'):
+            # Delete the user from the database
+            result = db.domisili.delete_one({"_id": ObjectId(domisili_id)})
+           
+            if result.deleted_count > 0:
+                return jsonify({"result": "success"})
+            else:
+                return jsonify({"result": "fail", "msg": "failed to delete"})
+        else:
+            return jsonify({"result": "fail", "msg": "Unauthorized access"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "fail", "msg": "Invalid token"})
+    
+@app.route('/user/delete_die/<die_id>', methods=['POST'])
+def delete_die(die_id):
+    token_receive = request.cookies.get(TOKEN_KEY)
+    
+    try:
+        payload = jwt.decode(
+            token_receive, 
+            SECRET_KEY, 
+            algorithms=["HS256"]
+        )
+        
+        # Check if the user is an admin
+        if payload.get('name'):
+            # Delete the user from the database
+            result = db.kematian.delete_one({"_id": ObjectId(die_id)})
+           
+            if result.deleted_count > 0:
+                return jsonify({"result": "success"})
+            else:
+                return jsonify({"result": "fail", "msg": "failed to delete"})
+        else:
+            return jsonify({"result": "fail", "msg": "Unauthorized access"})
+    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+        return jsonify({"result": "fail", "msg": "Invalid token"})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
