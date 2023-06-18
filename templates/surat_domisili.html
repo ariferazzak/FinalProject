@@ -39,7 +39,7 @@
             margin: 0;
         }
 
-        .container {
+        .container-fluid {
             display: flex;
             min-height: 100vh;
         }
@@ -150,6 +150,8 @@
         /* toogle menu */
 
         #menu-button {
+            margin-left: 10px;
+            margin-top: 20px;
             width: 32px;
             position: absolute;
             overflow: hidden;
@@ -286,7 +288,7 @@
         .content-header h1 {
             font-style: normal;
             font-weight: 600;
-            font-size: 40px;
+            font-size: 35px;
             line-height: 30px;
             color: #000000;
             margin-bottom: 10px;
@@ -295,6 +297,8 @@
         .content-profil {
             justify-content: end;
             align-content: flex-end;
+            margin-right: 20px;
+            margin-top: 5px;
         }
 
         .content-profil strong {
@@ -303,6 +307,7 @@
             font-style: normal;
             line-height: 24px;
             color: #000000;
+            margin-right: 10px;
         }
 
         .content-body {
@@ -363,7 +368,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="sidebar">
             <div class="header">
                 <div class="list-item">
@@ -396,9 +401,9 @@
                     </a>
                 </div>
                 <div class="list-item">
-                    <a onclick="sign_out()">
+                    <a href="/user">
                         <img src="/static/logout.png" alt="" class="icon">
-                        <span class="description">Logout</span>
+                        <span class="description">Kembali</span>
                     </a>
                 </div>
             </div>
@@ -417,7 +422,7 @@
                     <a href="#"
                         class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        <strong style="font-size: 20px;">{{ name_info.name }}</strong>
+                        <strong style="font-size: 20px;">@{{ name_info.name }}</strong>
                         <img src="{{ url_for('static', filename=name_info.profile_pic_real) }}" alt="" width="50"
                             height="50" class="rounded-circle me-2">
                     </a>

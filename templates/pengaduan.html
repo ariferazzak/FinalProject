@@ -34,9 +34,9 @@
 
       .container{
         width: 600px;
-        height: 500px;
+        height: 480px;
         box-shadow: 14px 6px 10px -3px rgba(0,0,0,0.1);
-        background-color: beige;
+        background-color:  #111827;
         border-radius: 10px;
         padding-top: 7px;
       }
@@ -45,15 +45,14 @@
         color: #FFFFFF;
         border-radius: 10px;
         text-align: center;
-        background-color: #000000;
+        background-color: #ff8800;
         outline: none;
-        margin-top: 5px;
+        margin-top: 10px;
       }
 
-      .kirim:focus{
-        background-color: #FFFFFF;
-        color: #000000;
-        outline: none;
+      .kirim:hover{
+        background-color: #ff8800;
+        color: #FFFFFF;
       }
     </style>
     <script>
@@ -94,7 +93,7 @@
           <div class="profile">
             <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none"  aria-expanded="false">
               <img src="{{ url_for('static', filename=name_info.profile_pic_real) }}" alt="" width="50" height="50" class="rounded-circle me-2">
-              <strong style="font-size: 20px;">{{ name_info.name }}</strong>
+              <strong style="font-size: 20px;">@{{ name_info.name }}</strong>
             </a>
           </div>
           <button style="margin-right: 10px;" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight" aria-label="Toggle navigation">
@@ -102,32 +101,32 @@
           </button>
           <div style="width: 300px; background-color: rgb(240, 149, 39);" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
             <div class="offcanvas-header" style="justify-content:center;">
-              <h4 class="header" style="padding-top: 10px;"><strong>DIGITAL SENSUS</strong></h4>
+              <h4 class="header text-white" style="padding-top: 10px;"><strong>DIGITAL SENSUS</strong></h4>
             </div>
             <hr>
-            <div class="offcanvas-body">
+            <div class="offcanvas-body ">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/user">Home</a>
+                  <a class="nav-link active text-white" aria-current="page" href="/user">Home</a>
                 </li>
                 <hr>
                 <li class="nav-item">
                   <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a href="#" class="text-white d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       Pelayanan
                     </a>
-                    <ul class="dropdown-menu text-small shadow">
-                      <li><a class="dropdown-item" href="#">Surat Domisili</a></li>
+                    <ul class="dropdown-menu text-small shadow bg-dark">
+                      <li><a class="dropdown-item text-white" href="#">Surat Domisili</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Surat Kelahiran</a></li>
+                      <li><a class="dropdown-item text-white" href="#">Surat Kelahiran</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Surat Kematian</a></li>
+                      <li><a class="dropdown-item text-white" href="#">Surat Kematian</a></li>
                     </ul>
                   </div>
                 </li>
                 <hr>
                 <li class="nav-item">
-                  <a class="nav-link" href="/pengaduan">Pengaduan</a>
+                  <a class="nav-link text-white" href="/pengaduan">Pengaduan</a>
                 </li>
                 <hr>
                 <li class="nav-item">
@@ -145,7 +144,7 @@
             <span>Semua Pengaduan Anda Akan Menjadi Evaluasi Kami</span>
         </div>
         <div class="container">
-          <div class="row justify-content-center">
+          <div class="row justify-content-center text-white my-2 mx-2 ">
 
             <div class="mb-3">
               <label for="name" class="form-label">Nama</label>
@@ -163,7 +162,7 @@
               <label for="formFile" class="form-label">Upload Bukti Pengaduan</label>
               <input class="form-control" type="file" id="file" name="file">
             </div>
-            <button onclick=posting()  type="button" class="kirim btn col-md-4">Send</button>
+            <button onclick=posting()  type="button" class="kirim btn btn-dark col-md-4">Kirim</button>
 
           </div>
         </div>
