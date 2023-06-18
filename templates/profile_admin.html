@@ -36,6 +36,30 @@
             margin: 10px;
         }
 
+        .btn-nav a{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 24px;
+          width: 100px;
+          height: 40px;
+          border-radius: 10px;
+        }
+
+        .btn-nav a:hover{
+          color: #EEEEEE !important;
+      }
+
+      #pills-tab .nav-item button{
+        font-style: normal;
+        font-weight: 600;
+        font-size: 17px;
+        line-height: 24px;
+        width: 150px;
+        height: 50px;
+        border-radius: 10px;
+      }
+
         th,td{
             text-align: center;
         }
@@ -49,10 +73,259 @@
           margin:10px;
         }
 
+        *{
+          font-family: 'Lobster', cursive;
+          font-family: 'Poppins', sans-serif;
+          padding: 0;
+          margin: 0;
+      }
+
+      .cf{
+        margin-top: 96px;
+          display: flex;
+          min-height: 100vh;
+      }
+
+      .sidebar{
+          background-color: #111827;
+          width: 260px;
+          padding: 24px;
+          display: flex;
+          box-sizing: border-box;
+          flex-direction: column;
+          transition: all ease-in .3s;
+      }
+
+      .sidebar.hide{
+          width: 87px;
+          transition: all ease-out .3s;
+      }
+
+      .main-content{
+          background-color: #EEEEEE;
+          flex-grow: 1;
+      }
+
+      .sidebar .description-header{
+          font-style: normal;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 16px;
+          text-align: center;
+          color: #FFFFFF;
+      }
+
+      .sidebar.hide .description-header{
+          display: none;
+      }
+
+      .sidebar a{
+          text-decoration: none;
+      }
+
+      .sidebar .header .list-item{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          padding: 12px 10px;
+          border-radius: 8px;
+          height: 40px;
+          box-sizing: border-box;
+      }
+
+      .sidebar .header .list-item span{
+          font-size: 24px;
+      }
+
+      .sidebar .header .list-item .icon{
+          margin-right: 12px;
+      }
+
+      .sidebar .header .illustration{
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 10px;
+          margin: 10px 0 22px 0;
+          box-sizing: border-box;
+      }
+
+      .sidebar.hide .illustration{
+          display: none;
+      }
+
+      .sidebar .main .list-item .description{
+          font-style: normal;
+          font-weight: 500;
+          font-size: 14px;
+          line-height: 16px;
+          text-align: center;
+          color: #FFFFFF;
+      }
+
+      .sidebar.hide .main .list-item .description{
+          display: none;
+      }
+
+      .sidebar .main .list-item .icon{
+          margin-right: 12px;
+          color: #EEEEEE;
+      }
+
+      .sidebar .main .list-item{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          padding: 12px 10px;
+          border-radius: 8px;
+          /*width: 212px;*/
+          margin-bottom: 10px;
+          box-sizing: border-box;
+          transition: all ease-in .2s;
+      }
+
+      .sidebar .main .list-item:hover{
+          background: #ff8800;
+          transition: all ease-in .2s;
+      }
+
+        /* toogle menu */
+
+        #menu-button {
+          margin-top: 5px;
+          margin-left: 5px;
+          width: 32px;
+          position: absolute;
+          overflow: hidden;
+      }
+
+      #menu-label {
+          position: relative;
+          display: block;
+          height: 20px;
+          cursor: pointer;
+      }
+
+      #menu-checkbox {
+          display: none;
+      }
+
+      #hamburger,
+      #menu-label:after,
+      #menu-label:before {
+          position: absolute;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background-color: #111827;
+      }
+
+      #menu-label:after,
+      #menu-label:before {
+          content: "";
+          transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) left;
+      }
+
+      #menu-label:before {
+          top: 0;
+      }
+
+      #menu-label:after {
+          top: 8px;
+      }
+
+      #hamburger {
+          top: 16px;
+      }
+
+      #hamburger:before {
+          content: "MENU";
+          position: absolute;
+          top: 5px;
+          right: 0;
+          left: 0;
+          color: #111827;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center;
+      }
+
+      #menu-checkbox:checked+#menu-label::before {
+          left: -39px;
+      }
+
+      #menu-checkbox:checked+#menu-label::after {
+          left: 39px;
+      }
+
+      #menu-checkbox:checked+#menu-label #hamburger::before {
+          animation: moveUpThenDown 0.8s ease 0.2s forwards,
+              shakeUp 0.8s ease 0.2s forwards,
+              shakeDown 0.2s ease 0.8s forwards
+      }
+
+      @keyframes moveUpThenDown {
+          0% {
+              top: 0;
+          }
+
+          50% {
+              top: -27px;
+          }
+
+          100% {
+              top: -14px;
+          }
+      }
+
+      @keyframes shakeUp {
+          0% {
+              transform: rotateZ(0);
+          }
+
+          25% {
+              transform: rotateZ(-10deg);
+          }
+
+          50% {
+              transform: rotateZ(0);
+          }
+
+          75% {
+              transform: rotateZ(10deg);
+          }
+
+          100% {
+              transform: rotateZ(0);
+          }
+      }
+
+      @keyframes shakeDown {
+          0% {
+              transform: rotateZ(0);
+          }
+
+          80% {
+              transform: rotateZ(3deg);
+          }
+
+          90% {
+              transform: rotateZ(-3deg);
+          }
+
+          100% {
+              transform: rotateZ(0);
+          }
+      }
+
+      .content-2{
+        margin-top: 50px;
+        
+      }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" style="background-color: #111827; color:#EEEEEE">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="/static/admin.png" width="50" height="50">
@@ -61,28 +334,63 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="d-flex" style="margin: 10px;">
-                <a class="btn btn-outline-warning active" >Home</a>
-                <a onclick="sign_out()" class="btn btn-outline-warning" >Log Out</a>
+            <div class="d-flex btn-nav" style="margin: 10px;">
+                <a class="btn btn-outline-warning active home-btn" >Home</a>
+                <a onclick="sign_out()" class="btn btn-outline-warning logout" >Log Out</a>
             </div>
           </div>
         </div>
       </nav>
-    <main style="margin-top: 100px;">
-        <div class="menu">
-            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" >
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-outline-dark active" id="pills-rakyat-tab" data-bs-toggle="pill" data-bs-target="#pills-rakyat" type="button" role="tab" aria-controls="pills-rakyat" aria-selected="true">Data Masyarakat</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-outline-dark" id="pills-layanan-tab" data-bs-toggle="pill" data-bs-target="#pills-layanan" type="button" role="tab" aria-controls="pills-layanan" aria-selected="false">Data Pelayanan</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-outline-dark" id="pills-pengaduan-tab" data-bs-toggle="pill" data-bs-target="#pills-pengaduan" type="button" role="tab" aria-controls="pills-pengaduan" aria-selected="false">Data Pengaduan</button>
-                </li>
-            </ul>
+
+      <div class="container-fluid cf">
+        <div class="sidebar">
+            <div class="header">
+                <div class="list-item">
+                    <a href="">
+                        <span class="description-header">Halaman Admin</span>
+                    </a>
+                </div>
+                <div class="illustration">
+                    <img src="" alt="">
+                </div>
+            </div>
+
+            <div class="main">
+              <div class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <div class="list-item nav-item" role="presentation">
+                    <a href="" id="pills-rakyat-tab" data-bs-toggle="pill" data-bs-target="#pills-rakyat" type="button" role="tab" aria-controls="pills-rakyat" aria-selected="true">
+                        <img src="/static/folders.png" alt="" class="icon">
+                        <span class="description">Data Masyarakat</span>
+                    </a>
+                </div>
+                <div class="list-item nav-item" role="presentation">
+                    <a href="" id="pills-layanan-tab" data-bs-toggle="pill" data-bs-target="#pills-layanan" type="button" role="tab" aria-controls="pills-layanan" aria-selected="false">
+                        <img src="/static/folder.png" alt="" class="icon">
+                        <span class="description">Data Pelayanan</span>
+                    </a>
+                </div>
+                <div class="list-item nav-item" role="presentation">
+                    <a href="" id="pills-pengaduan-tab" data-bs-toggle="pill" data-bs-target="#pills-pengaduan" type="button" role="tab" aria-controls="pills-pengaduan" aria-selected="false">
+                        <img src="/static/file.png" alt="" class="icon">
+                        <span class="description">Data Pengaduan</span>
+                    </a>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div id="menu-button">
+                <input type="checkbox" id="menu-checkbox">
+                <label for="menu-checkbox" id="menu-label">
+                    <div id="hamburger">
+                    </div>
+                </label>
+            </div>
+            <div class="content-2 mx-2">
               <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-rakyat" role="tabpanel" aria-labelledby="pills-rakyat-tab" tabindex="0">
+                  <h1 class="fs-5 fw-bold d-flex justify-content-center text-black mb-4">Selamat Datang di Halaman Data Masyarakat</h1>
                     <table class="table">
                         <thead>
                           <tr>
@@ -110,13 +418,14 @@
                       </table>
                 </div>
                 <div class="tab-pane fade" id="pills-layanan" role="tabpanel" aria-labelledby="pills-layanan-tab" tabindex="0">
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                          <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Surat Domisili</button>
-                          <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Surat Kelahiran</button>
-                          <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Surat Kematian</button>
-                        </div>
-                      </nav>
+                  <h1 class="fs-5 fw-bold d-flex justify-content-center text-black mb-4">Selamat Datang di Halaman Data Pelayanan </h1>
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Surat Domisili</button>
+                      <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Surat Kelahiran</button>
+                      <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Surat Kematian</button>
+                    </div>
+                  </nav>
                       <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
                           <table class="table">
@@ -214,7 +523,7 @@
                         </div>
                       </div>
                 </div>
-                <div style="display: flex;" class="tab-pane fade row row-cols-1 row-cols-lg-3" id="pills-pengaduan" role="tabpanel" aria-labelledby="pills-pengaduan-tab" tabindex="0">
+                <div style="display: flex;" class="tab-pane fade row row-cols-1 row-cols-lg-3" id="pills-pengaduan" role="tabpanel" aria-labelledby="pills-pengaduan-tab" tabindex="0">                
                     <div class="card" style="width: 400px;">
                         <div class="card-body">
                           <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
@@ -227,6 +536,8 @@
                 </div>
               </div>
             </div>
-    </main>
+        </div>
+      </div>
+    <script src="/static/sidebar.js"></script>
 </body>
 </html>
