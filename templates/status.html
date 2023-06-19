@@ -281,6 +281,7 @@
       }
     </style>
     <script src="/static/user.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Cek Status</title>
 </head>
 <body>
@@ -319,9 +320,9 @@
                 </a>
             </div>
             <div class="list-item">
-                <a href="/login/user">
+                <a href="/user">
                     <img src="/static/logout.png" alt="" class="icon">
-                    <span class="description">Logout</span>
+                    <span class="description">Kembali</span>
                 </a>
             </div>
         </div>
@@ -350,7 +351,7 @@
                   <li>
                       <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="/login/user">Sign out</a></li>
+                  <li><a class="dropdown-item" href="" onclick="sign_out()">Sign out</a></li>
               </ul>
           </div>
       </div>
@@ -464,6 +465,31 @@
           </div>
   </div>
   </div>
+  </div>
+  <!-- class modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Profile</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="pic" class="form-label">Ubah Foto Profil</label>
+            <input type="file" class="form-control" id="picture">
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Ubah Nama Lengkap</label>
+            <input type="text" class="form-control" id="username_update" placeholder="Nama anda">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button onclick="update_profile()" type="button" class="btn btn-dark">Save</button>
+        </div>
+      </div>
+    </div>
   </div>
     {% endif %}
     <script src="/static/sidebar.js"></script>

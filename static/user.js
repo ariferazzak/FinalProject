@@ -1,27 +1,3 @@
-// Send Pengaduan
-function simpan() {
-    let name = $("#name").val();
-    let pengaduan = $("#pengaduan").val();
-    let kejadian = $("#tanggal").val();
-    let file = $("#formFile").val();
-    let today = new Date().toISOString()
-    $.ajax({
-        type: "POST",
-        url: "/posting",
-        data: {
-            username_give:name,
-            pengaduan_give:pengaduan,
-            file_give: file,
-            kejadian_give : kejadian, 
-            date_give :today
-        },
-        success: function (response) {
-            alert("Pengaduan Anda Telah di Kirim!");
-            window.location.replace("/user");
-        },
-        });
-}
-
 // edit profil
 function update_profile() {
   let name = $("#username_update").val();
@@ -39,7 +15,7 @@ function update_profile() {
     processData: false,
     success: function (response) {
       if (response["result"] === "success") {
-        alert(response["msg"]);
+        swal("Success",response["msg"],"success");
         window.location.reload();
       }
     },
@@ -49,7 +25,7 @@ function update_profile() {
 // logout
 function sign_out() {
   $.removeCookie("mytoken", { path: "/" });
-  alert("Signed out!");
+  swal("Signed out!");
   window.location.href = "/login/user";
 }
 
@@ -61,7 +37,7 @@ function batal(birthId) {
     type: 'POST',
     success: function(response) {
       if (response.result === 'success') {
-        alert('Permohonan berhasil dibatalkan');
+        swal("Success","Permohonan berhasil dibatalkan","success");
         window.location.reload();
       } else {
         console.log('Failed to delete :', response.msg);
@@ -81,7 +57,7 @@ function hapus(domisiliId) {
     type: 'POST',
     success: function(response) {
       if (response.result === 'success') {
-        alert('Permohonan berhasil dibatalkan');
+        swal("Success","Permohonan berhasil dibatalkan","success");
         window.location.reload();
       } else {
         console.log('Failed to delete :', response.msg);
@@ -101,7 +77,7 @@ function cancel(dieId) {
     type: 'POST',
     success: function(response) {
       if (response.result === 'success') {
-        alert('Permohonan berhasil dibatalkan');
+        swal("Success","Permohonan berhasil dibatalkan","success");
         window.location.reload();
       } else {
         console.log('Failed to delete :', response.msg);

@@ -32,6 +32,7 @@
   <!-- js -->
   <script src="/static/user.js">
   </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
   <style>
     *{
@@ -224,9 +225,6 @@
           shakeDown 0.2s ease 0.8s forwards
   }
 
-  input[type="file"]{
-    display: none;
-  }
 
   @keyframes moveUpThenDown {
       0% {
@@ -347,7 +345,7 @@
                   </a>
               </div>
               <div class="list-item">
-                  <a href="/login/user">
+                  <a href="" onclick="sign_out()">
                       <img src="/static/logout.png" alt="" class="icon">
                       <span class="description">Logout</span>
                   </a>
@@ -378,7 +376,7 @@
                       <li>
                           <hr class="dropdown-divider">
                       </li>
-                      <li><a class="dropdown-item" href="/login/user">Sign out</a></li>
+                      <li><a class="dropdown-item" href="" onclick="sign_out()">Sign out</a></li>
                   </ul>
               </div>
           </div>

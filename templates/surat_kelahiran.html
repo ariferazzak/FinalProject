@@ -23,7 +23,7 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <style>
         *{
             font-family: 'Lobster', cursive;
@@ -408,7 +408,7 @@
                     <ul class="dropdown-menu text-small shadow">
                       <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit Profile</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="">Sign out</a></li>
+                      <li><a class="dropdown-item" onclick="sign_out()" href="">Sign out</a></li>
                     </ul>
                   </div>
             </div>
@@ -469,7 +469,7 @@
     <script src="/static/sidebar.js"></script>
     <script>
         function save(){
-            alert('Surat berhasil dibuat!')
+            swal("Success","Surat berhasil dibuat!","success")
         }
     </script>
 </body>

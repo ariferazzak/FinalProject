@@ -30,7 +30,7 @@
         integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <style>
         * {
             font-family: 'Lobster', cursive;
@@ -432,7 +432,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="/login/user">Sign out</a></li>
+                        <li><a class="dropdown-item" href="" onclick="sign_out()">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -485,7 +485,7 @@
     <script src="/static/sidebar.js"></script>
     <script>
         function send(){
-            alert('Surat berhasil dibuat!')
+            swal("Success","Surat berhasil dibuat!","success")
         }
     </script>
 </body>

@@ -142,7 +142,7 @@ def login_admin():
             )
         return jsonify({"result": "success", "token": token})
     else:
-        return jsonify({"result": "fail", "msg": "Either your email or your password is incorrect"})
+        return jsonify({"result": "fail", "msg": "Either your Id or your password is incorrect"})
     
 # api login sisi user
 @app.route('/login/user', methods=['POST'])
@@ -168,7 +168,7 @@ def login_user():
             )
         return jsonify({"result": "success", "token": token})
     else:
-        return jsonify({"result": "fail"})
+        return jsonify({"result": "fail", "msg": "Either your username or your password is incorrect"})
 
 @app.route('/homepage_user/pengaduan',methods=['GET'])
 def pengaduan():

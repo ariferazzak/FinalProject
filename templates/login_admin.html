@@ -131,11 +131,16 @@
             text-shadow: 0px 3px 5px rgb(0, 0, 0, 0.15);
         }
     </style>
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
         function sign_in() {
             let id = $("#id").val();
             let password = $("#input-password").val();
+
+            if (id === "" || password === "") {
+                swal("Oops!", "Id dan Password Harus diIsi!", "warning");
+                return;
+            }
 
             $.ajax({
                 type: "POST",
@@ -149,23 +154,7 @@
                     $.cookie("admintoken", response["token"], {path: "/" });
                     window.location.replace("/admin");
                     } else {
-                        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-                        const appendAlert = (message, type)=> {
-                        const wrapper = document.createElement('div')
-                        wrapper.innerHTML = 
-                            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-                            `   <div>${message}</div>`,
-                            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                            '</div>'
-
-                        alertPlaceholder.append(wrapper)
-                        }
-                        const alertTrigger = document.getElementById('liveAlertBtn')
-                        if (alertTrigger) {
-                        alertTrigger.addEventListener('click', () => {
-                            appendAlert('msg', 'danger')
-                        })
-                        }
+                        swal("Oops!",response["msg"],"error");
                     }
                 },
                 });
@@ -186,7 +175,6 @@
                             <h1>Halo, Admin</h1>
                             <p>Selamat Datang di Desa Kami | Silahkan Login</p>
                         </div>
-                        <div id="liveAlertPlaceholder"></div>
                         <div class="mb-3">
                           <label for="id" class="form-label">Id</label>
                           <input type="text" class="form-control" id="id" placeholder="Masukkan id anda">
