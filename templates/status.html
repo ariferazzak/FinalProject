@@ -109,7 +109,7 @@
             <tbody>
               {% for domisili in status_domisili %}
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{ domisili.num }}</th>
                 <td>{{ domisili.nama }}</td>
                 <td>{{ domisili.ttl }}</td>
                 <td>{{ domisili.jk }}</td>
@@ -142,7 +142,7 @@
             <tbody>
               {% for birth in status_kelahiran %}
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{ birth.num }}</th>
                 <td>{{ birth.nama_bayi }}</td>
                 <td>{{ birth.tempat_lahir }}</td>
                 <td>{{ birth.tanggal_lahir }}</td>
@@ -177,7 +177,7 @@
             <tbody>
               {% for kematian in status_kematian %}
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{ kematian.num }}</th>
                 <td>{{ kematian.nama }}</td>
                 <td>{{ kematian.ttl }}</td>
                 <td>{{ kematian.agama }}</td>

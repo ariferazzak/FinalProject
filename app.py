@@ -82,10 +82,13 @@ def register_user():
     nik_receive = request.form.get('nik_give')
     alamat_receive = request.form.get('alamat_give')
     pw_receive = request.form.get('pw_give')
+    count = db.user.count_documents({})
+    num = count + 1
 
     pw_hash = hashlib.sha256(pw_receive.encode("utf-8")).hexdigest()
 
     db.user.insert_one({
+        "num":num,
         "long_name" : longname_receive,
         "name": username_receive, 
         "nik": nik_receive,
@@ -309,6 +312,8 @@ def kelahiran_post():
         ibu = request.form['ibu']
         no = request.form['no']
         jk = request.form['jenis-kelamin']
+        count = db.kelahiran.count_documents({})
+        num = count + 1
 
         file = request.files["pdf"]
         
@@ -322,6 +327,7 @@ def kelahiran_post():
 
         
         doc={
+            "num" : num,
             "nama_bayi" : name,
             "tempat_lahir": tempat,
             "tanggal_lahir": tanggal,
@@ -365,6 +371,8 @@ def domisili_post():
         jk = request.form['jenis-kelamin']
         work = request.form['work']
         alamat = request.form['alamat']
+        count = db.domisili.count_documents({})
+        num = count + 1
 
         file = request.files["pdf"]
         
@@ -378,6 +386,7 @@ def domisili_post():
 
         
         doc={
+            "num" : num,
             "nama" : name,
             "ttl" : ttl,
             "work" : work,
@@ -421,6 +430,8 @@ def kematian_post():
         tempat = request.form['tempat']
         tanggal = request.form['tanggal']
         penyebab = request.form['penyebab']
+        count = db.kematian.count_documents({})
+        num = count + 1
 
         file = request.files["pdf"]
         
@@ -434,6 +445,7 @@ def kematian_post():
 
         
         doc={
+            "num" : num,
             "nama" : name,
             "ttl" : ttl,
             "agama" :agama,
