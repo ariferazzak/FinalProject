@@ -1,173 +1,459 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <title>Digital Sensus || Pengaduan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap&family=Merriweather" rel="stylesheet">
 
-    <!-- font poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/static/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+  <link rel="stylesheet" href="/static/style.css">
 
-    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-    
-    <style>
-      *{
-          font-family: 'Lobster', cursive;
-          font-family: 'Poppins', sans-serif;
+  <!-- font poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- js -->
+  <script>
+    function posting(){
+      let nama = $("#name").val();
+      let pengaduan = $("#pengaduan").val();
+      let date = $("#tanggal").val();
+      let file = $("#file").prop("files")[0];
+      let today = new Date().toISOString()
+      let form_data = new FormData();
+
+      form_data.append("name", nama);
+      form_data.append("pengaduan", pengaduan);
+      form_data.append("tanggal", date);
+      form_data.append("file", file);
+      form_data.append("today", today);
+  
+      $.ajax({
+        method:"POST",
+        url:"/posting",
+        data: form_data,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+          alert(response.result)
+          window.location.reload();
+        },
+      })
+    }
+  </script>
+
+  <style>
+    *{
+      font-family: 'Lobster', cursive;
+      font-family: 'Poppins', sans-serif;
+      padding: 0;
+      margin: 0;
+  }
+
+  .cf{
+      display: flex;
+      min-height: 100vh;
+  }
+
+  .sidebar{
+      background-color: #111827;
+      width: 260px;
+      padding: 24px;
+      display: flex;
+      box-sizing: border-box;
+      flex-direction: column;
+      transition: all ease-in .3s;
+  }
+
+  .sidebar.hide{
+      width: 87px;
+      transition: all ease-out .3s;
+  }
+
+  .main-content{
+      background-color: #EEEEEE;
+      flex-grow: 1;
+  }
+
+  .sidebar .description-header{
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 16px;
+      text-align: center;
+      color: #FFFFFF;
+  }
+
+  .sidebar.hide .description-header{
+      display: none;
+  }
+
+  .sidebar a{
+      text-decoration: none;
+  }
+
+  .sidebar .header .list-item{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 12px 10px;
+      border-radius: 8px;
+      height: 40px;
+      box-sizing: border-box;
+  }
+
+  .sidebar .header .list-item span{
+      font-size: 24px;
+  }
+
+  .sidebar .header .list-item .icon{
+      margin-right: 12px;
+  }
+
+  .sidebar .header .illustration{
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px;
+      margin: 10px 0 22px 0;
+      box-sizing: border-box;
+  }
+
+  .sidebar.hide .illustration{
+      display: none;
+  }
+
+  .sidebar .main .list-item .description{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 16px;
+    text-align: center;
+    color: #FFFFFF;
+  }
+
+  .sidebar.hide .main .list-item .description{
+      display: none;
+  }
+
+  .sidebar .main .list-item .icon{
+      margin-right: 12px;
+      color: #EEEEEE;
+  }
+
+  .sidebar .main .list-item{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 12px 10px;
+      border-radius: 8px;
+      /*width: 212px;*/
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      transition: all ease-in .2s;
+  }
+
+  .sidebar .main .list-item:hover{
+      background: #ff8800;
+      transition: all ease-in .2s;
+  }
+
+    /* toogle menu */
+
+    #menu-button {
+      margin-top: 5px;
+      margin-left: 5px;
+      width: 32px;
+      position: absolute;
+      overflow: hidden;
+  }
+
+  #menu-label {
+      position: relative;
+      display: block;
+      height: 20px;
+      cursor: pointer;
+  }
+
+  #menu-checkbox {
+      display: none;
+  }
+
+  #hamburger,
+  #menu-label:after,
+  #menu-label:before {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: #111827;
+  }
+
+  #menu-label:after,
+  #menu-label:before {
+      content: "";
+      transition: 0.4s cubic-bezier(0.075, 0.82, 0.165, 1) left;
+  }
+
+  #menu-label:before {
+      top: 0;
+  }
+
+  #menu-label:after {
+      top: 8px;
+  }
+
+  #hamburger {
+      top: 16px;
+  }
+
+  #hamburger:before {
+      content: "MENU";
+      position: absolute;
+      top: 5px;
+      right: 0;
+      left: 0;
+      color: #111827;
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+  }
+
+  #menu-checkbox:checked+#menu-label::before {
+      left: -39px;
+  }
+
+  #menu-checkbox:checked+#menu-label::after {
+      left: 39px;
+  }
+
+  #menu-checkbox:checked+#menu-label #hamburger::before {
+      animation: moveUpThenDown 0.8s ease 0.2s forwards,
+          shakeUp 0.8s ease 0.2s forwards,
+          shakeDown 0.2s ease 0.8s forwards
+  }
+
+ 
+
+  @keyframes moveUpThenDown {
+      0% {
+          top: 0;
       }
 
-      .title{
-        text-align: center; 
-        margin-top:100px;
-        color: #000000;
-        margin-bottom: 30px;
+      50% {
+          top: -27px;
       }
 
-      .container{
-        width: 600px;
-        height: 480px;
-        box-shadow: 14px 6px 10px -3px rgba(0,0,0,0.1);
-        background-color:  #111827;
-        border-radius: 10px;
-        padding-top: 7px;
+      100% {
+          top: -14px;
+      }
+  }
+
+  @keyframes shakeUp {
+      0% {
+          transform: rotateZ(0);
       }
 
-      .kirim{
-        color: #FFFFFF;
-        border-radius: 10px;
-        text-align: center;
-        background-color: #ff8800;
-        outline: none;
-        margin-top: 10px;
+      25% {
+          transform: rotateZ(-10deg);
       }
 
-      .kirim:hover{
-        background-color: #ff8800;
-        color: #FFFFFF;
+      50% {
+          transform: rotateZ(0);
       }
-    </style>
-    <script>
-      function posting(){
-        let nama = $("#name").val();
-        let pengaduan = $("#pengaduan").val();
-        let date = $("#tanggal").val();
-        let file = $("#file").prop("files")[0];
-        let today = new Date().toISOString()
-        let form_data = new FormData();
 
-        form_data.append("name", nama);
-        form_data.append("pengaduan", pengaduan);
-        form_data.append("tanggal", date);
-        form_data.append("file", file);
-        form_data.append("today", today);
-    
-        $.ajax({
-          method:"POST",
-          url:"/posting",
-          data: form_data,
-          contentType: false,
-          processData: false,
-          success: function (response) {
-            alert(response.result)
-            window.location.reload();
-          },
-        })
+      75% {
+          transform: rotateZ(10deg);
       }
-    </script>
 
-    <title>Pengaduan</title>
+      100% {
+          transform: rotateZ(0);
+      }
+  }
+
+  @keyframes shakeDown {
+      0% {
+          transform: rotateZ(0);
+      }
+
+      80% {
+          transform: rotateZ(3deg);
+      }
+
+      90% {
+          transform: rotateZ(-3deg);
+      }
+
+      100% {
+          transform: rotateZ(0);
+      }
+  }
+
+.content-profil{
+    justify-content: end;
+    align-content: flex-end;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+.title{
+  text-align: center; 
+  margin-top:30px;
+  color: #000000;
+  margin-bottom: 30px;
+}
+
+.container{
+  width: 600px;
+  height: 480px;
+  box-shadow: 14px 6px 10px -3px rgba(0,0,0,0.1);
+  background-color:  #111827;
+  border-radius: 10px;
+  padding-top: 7px;
+}
+
+.kirim{
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  color: #FFFFFF;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #ff8800;
+  outline: none;
+  margin-top: 10px;
+  height: 40px;
+}
+
+.kirim:hover{
+  background-color: #ff8800;
+  color: #111827;
+}
+  </style>
 </head>
-<body style="height:100vh;">
-    <header>
-      <nav class="navbar fixed-top" aria-label="Digital sensus">
-        <div class="container-fluid">
-          <div class="profile">
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none"  aria-expanded="false">
-              <img src="{{ url_for('static', filename=name_info.profile_pic_real) }}" alt="" width="50" height="50" class="rounded-circle me-2">
-              <strong style="font-size: 20px;">@{{ name_info.name }}</strong>
-            </a>
+
+<body>
+    <div class="container-fluid cf">
+      <div class="sidebar">
+          <div class="header">
+              <div class="list-item">
+                  <a href="">
+                      <span class="description-header">Halaman Pengaduan</span>
+                  </a>
+              </div>
+              <div class="illustration">
+                  <img src="" alt="">
+              </div>
           </div>
-          <button style="margin-right: 10px;" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div style="width: 300px; background-color: rgb(240, 149, 39);" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
-            <div class="offcanvas-header" style="justify-content:center;">
-              <h4 class="header text-white" style="padding-top: 10px;"><strong>DIGITAL SENSUS</strong></h4>
-            </div>
-            <hr>
-            <div class="offcanvas-body ">
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                  <a class="nav-link active text-white" aria-current="page" href="/user">Home</a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                  <div class="dropdown">
-                    <a href="#" class="text-white d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                      Pelayanan
-                    </a>
-                    <ul class="dropdown-menu text-small shadow bg-dark">
-                      <li><a class="dropdown-item text-white" href="#">Surat Domisili</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item text-white" href="#">Surat Kelahiran</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item text-white" href="#">Surat Kematian</a></li>
-                    </ul>
+
+          <div class="main">
+              <div class="list-item">
+                  <a href="/user">
+                      <img src="/static/house (1).png  " alt="" class="icon">
+                      <span class="description">Home</span>
+                  </a>
+              </div>
+              <div class="list-item">
+                  <a href="/pelayanan/domisili">
+                      <img src="/static/file.png" alt="" class="icon">
+                      <span class="description">Pelayanan</span>
+                  </a>
+                  
+              </div>
+              <div class="list-item">
+                  <a href="/homepage_user/pengaduan">
+                      <img src="/static/folder.png" alt="" class="icon">
+                      <span class="description">Pengaduan</span>
+                  </a>
+              </div>
+              <div class="list-item">
+                  <a href="/login/user">
+                      <img src="/static/logout.png" alt="" class="icon">
+                      <span class="description">Logout</span>
+                  </a>
+              </div>
+          </div>
+      </div>
+
+      <div class="main-content">
+          <div id="menu-button">
+              <input type="checkbox" id="menu-checkbox">
+              <label for="menu-checkbox" id="menu-label">
+                  <div id="hamburger">
                   </div>
-                </li>
-                <hr>
-                <li class="nav-item">
-                  <a class="nav-link text-white" href="/pengaduan">Pengaduan</a>
-                </li>
-                <hr>
-                <li class="nav-item">
-                  <div class="close"><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button></div>
-                </li>
-              </ul>
+              </label>
+          </div>
+          <div class="content-profil d-flex">
+              <div class="dropdown">
+                  <a href="#"
+                      class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      <strong style="font-size: 20px;">@{{ name_info.name }}</strong>
+                      <img src="{{ url_for('static', filename=name_info.profile_pic_real) }}" alt="" width="50"
+                          height="50" class="rounded-circle me-2">
+                  </a>
+                  <ul class="dropdown-menu text-small shadow">
+                      <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                              data-bs-target="#staticBackdrop">Edit Profile</a></li>
+                      <li>
+                          <hr class="dropdown-divider">
+                      </li>
+                      <li><a class="dropdown-item" href="/login/user">Sign out</a></li>
+                  </ul>
+              </div>
+          </div>
+
+          <div class="content">
+            <div class="title" >
+              <h1><strong>LAYANAN PENGADUAN MASYARAKAT</strong></h1>
+              <span>Semua Pengaduan Anda Akan Menjadi Evaluasi Kami</span>
+          </div>
+          <div class="container">
+            <div class="row justify-content-center text-white my-2 mx-2 ">
+  
+              <div class="mb-3">
+                <label for="name" class="form-label">Nama</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama Anda">
+              </div>
+              <div class="mb-3">
+                <label for="pengaduan" class="form-label">Pengaduan</label>
+                <textarea class="form-control" id="pengaduan" name="pengaduan"placeholder="Masukkan laporan Anda" rows="3"></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal Kejadian</label>
+                <input class="form-control" id="tanggal" type="date" name="tanggal">
+              </div>
+              <div class="mb-3" >
+                <label for="formFile" class="form-label">Upload Bukti Pengaduan</label>
+                <input class="form-control" type="file" id="formFile" name="file" >
+              </div>
+              <button onclick=posting() type="button" class="kirim btn btn-dark col-md-4">Kirim</button>
+  
             </div>
           </div>
-        </div>
-      </nav>
-    </header>
-    <main>
-        <div class="title" >
-            <h1><strong>LAYANAN PENGADUAN MASYARAKAT</strong></h1>
-            <span>Semua Pengaduan Anda Akan Menjadi Evaluasi Kami</span>
-        </div>
-        <div class="container">
-          <div class="row justify-content-center text-white my-2 mx-2 ">
-
-            <div class="mb-3">
-              <label for="name" class="form-label">Nama</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan nama Anda">
-            </div>
-            <div class="mb-3">
-              <label for="pengaduan" class="form-label">Pengaduan</label>
-              <textarea class="form-control" id="pengaduan" name="pengaduan"placeholder="Masukkan laporan Anda" rows="3"></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="tanggal" class="form-label">Tanggal Kejadian</label>
-              <input class="form-control" id="tanggal" type="date" name="tanggal">
-            </div>
-            <div class="mb-3">
-              <label for="formFile" class="form-label">Upload Bukti Pengaduan</label>
-              <input class="form-control" type="file" id="file" name="file">
-            </div>
-            <button onclick=posting()  type="button" class="kirim btn btn-dark col-md-4">Kirim</button>
-
           </div>
-        </div>
-    </main>
+      </div>
+  </div>
+
+  <script src="/static/sidebar.js"></script>
 </body>
-
 
 </html>
