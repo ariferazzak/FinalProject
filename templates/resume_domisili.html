@@ -77,40 +77,40 @@
                     <tr>
                         <td><p>Nama</p></td>
                         <td><p>:</p></td>
-                        <td><p>Nisrina</p></td>
+                        <td><p>{{ data.nama }}</p></td>
                     </tr>
                     <tr>
                         <td><p>Tempat, Tanggal Lahir</p></td>
                         <td><p>:</p></td>
-                        <td><p>Jakarta, 19 September</p></td>
+                        <td><p>{{ data.ttl }}</p></td>
                     </tr>
                     <tr>
                         <td><p>Jenis Kelamin</p></td>
                         <td><p>:</p></td>
-                        <td><p>Perempuan</p></td>
+                        <td><p>{{ data.jk }}</p></td>
                     </tr>
                     <tr>
                         <td><p>Alamat</p></td>
                         <td><p>:</p></td>
-                        <td><p>Desa Kami RT01</p></td>
+                        <td><p>{{ data.alamat}}</p></td>
                     </tr>
                     <tr>
                         <td><p>Pekerjaan</p></td>
                         <td><p>:</p></td>
-                        <td><p>Mahasiswa</p></td>
+                        <td><p>{{ data.work }}</p></td>
                     </tr>
             </table>
             <table>
                     <tr>
                         <td><p>
-                           Orang tersebut diatas adalah benar warga kami dan berdomisili di Desa Kami (jinja). <br>
+                           Orang tersebut diatas adalah benar warga kami dan berdomisili di {{ data.alamat }}. <br>
                            Demikian surat keterangan ini dibuat untuk dipergunakan sebagaimana mestinya.
                         </p></td>
                     </tr>
             </table>
             <table width="100%">
                 <tr style="text-align: right;">
-                    <td><p>KEPALA DESA KAMI<br><img src="/static/cap.png" width="200" height="200"><br>Muhammad Sholihin</p></td>
+                    <td><p>KEPALA DESA KAMI<br><img src="https://media.discordapp.net/attachments/1076077418537832458/1120282726084378644/cap.png?width=200&height=200" width="200" height="200"><br>Muhammad Sholihin</p></td>
                 </tr>
                 <tr style="text-align: right;">
                 <td></td>     

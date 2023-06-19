@@ -443,6 +443,7 @@
                 <div class="content-body d-flex">
                     <div class="content-form">
                         <form  action="/pelayanan/domisili" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="username" value="{{ name_info.name }}">
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Lengkap</label>
                                 <input type="nama" name="name" class="form-control" id="nama" placeholder="Masukkan Nama Lengkap" required>
@@ -467,7 +468,7 @@
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat Domisili</label>
                                 <input type="alamat" class="form-control" id="alamat" name="alamat"
-                                    placeholder="Masukkan Tanggal Kematian" required>
+                                    placeholder="Masukkan Alamat Domisili" required>
                             </div>
                             <div class="mb-3">
                                 <label for="input-file" class="form-label">Upload file persyaratan</label>

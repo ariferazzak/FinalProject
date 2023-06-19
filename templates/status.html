@@ -31,6 +31,7 @@
     <title>Cek Status</title>
 </head>
 <body>
+  {% if status %}
     <header>
       <nav class="navbar fixed-top" aria-label="Digital sensus">
         <div class="container-fluid">
@@ -95,7 +96,6 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">No</th>
                 <th scope="col">Nama Pemohon</th>
                 <th scope="col">TTL</th>
                 <th scope="col">Jenis Kelamin</th>
@@ -109,14 +109,13 @@
             <tbody>
               {% for domisili in status_domisili %}
               <tr>
-                <th scope="row">{{ domisili.num }}</th>
                 <td>{{ domisili.nama }}</td>
                 <td>{{ domisili.ttl }}</td>
                 <td>{{ domisili.jk }}</td>
                 <td>{{ domisili.work }}</td>
                 <td>{{ domisili.alamat }}</td>
                 <td>{{ domisili.status }}</td>
-                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="#">unduh surat</a></td>
+                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="/download_surat/{{ domisili.surat }}">unduh surat</a></td>
                 <td><a onclick="hapus('{{ domisili._id }}')"class="btn btn-danger">Batal</a></td>
               </tr>
               {% endfor %}
@@ -127,7 +126,6 @@
           <table class="table ">
             <thead>
               <tr>
-                <th scope="col">No</th>
                 <th scope="col">Nama bayi</th>
                 <th scope="col">Tempat Lahir</th>
                 <th scope="col">Tanggal Lahir</th>
@@ -142,7 +140,6 @@
             <tbody>
               {% for birth in status_kelahiran %}
               <tr>
-                <th scope="row">{{ birth.num }}</th>
                 <td>{{ birth.nama_bayi }}</td>
                 <td>{{ birth.tempat_lahir }}</td>
                 <td>{{ birth.tanggal_lahir }}</td>
@@ -150,7 +147,7 @@
                 <td>{{ birth.anak }}</td>
                 <td>{{ birth.ayah }} & {{ birth.ibu }}</td>
                 <td>{{ birth.status }}</td>
-                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="#">unduh surat</a></td>
+                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="/download_surat/{{ birth.surat }}">unduh surat</a></td>
                 <td><a onclick="batal('{{ birth._id }}')"class="btn btn-danger">Batal</a></td>
               </tr>
               {% endfor %}
@@ -161,7 +158,6 @@
           <table class="table ">
             <thead>
               <tr>
-                <th scope="col">No</th>
                 <th scope="col">Nama</th>
                 <th scope="col">TTL</th>
                 <th scope="col">Agama</th>
@@ -177,7 +173,6 @@
             <tbody>
               {% for kematian in status_kematian %}
               <tr>
-                <th scope="row">{{ kematian.num }}</th>
                 <td>{{ kematian.nama }}</td>
                 <td>{{ kematian.ttl }}</td>
                 <td>{{ kematian.agama }}</td>
@@ -186,7 +181,7 @@
                 <td>{{ kematian.tempat }}</td>
                 <td>{{ kematian.penyebab }}</td>
                 <td>{{ kematian.status }}</td>
-                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="#">unduh surat</a></td>
+                <td><a style="color:rgb(21, 24, 189);" class="nav-link" href="/download_surat/{{ kematian.surat }}">unduh surat</a></td>
                 <td><a onclick="cancel('{{ kematian._id }}')"class="btn btn-danger">Batal</a></td>
               </tr>
               {% endfor %}
@@ -195,5 +190,6 @@
         </div>
       </div>
     </main>
+    {% endif %}
     </body>
 </html>

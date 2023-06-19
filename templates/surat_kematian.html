@@ -443,6 +443,7 @@
                 <div class="content-body d-flex">
                     <div class="content-form">
                         <form action="/pelayanan/kematian" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="username" value="{{ name_info.name }}">
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Lengkap</label>
                                 <input type="nama" class="form-control" id="nama" placeholder="Masukkan Nama Lengkap" name="nama" required>

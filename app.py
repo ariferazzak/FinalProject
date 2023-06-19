@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, send_file
+from flask import Flask, render_template, jsonify, request, redirect, url_for, send_file, make_response
 from pymongo import MongoClient
 import jwt
 import datetime
@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 import hashlib
 from werkzeug.utils import secure_filename
 from bson import ObjectId
+import pdfcrowd
 import os
 
 app = Flask(__name__)
@@ -27,9 +28,18 @@ def homeLogin():
 def home_admin():
     token_receive = request.cookies.get(TOKEN_ADMIN)
     data_masyarakat = db.user.find()
-    data_kelahiran = db.kelahiran.find()
-    data_kematian = db.kematian.find()
-    data_domisili = db.domisili.find()
+    data_kelahiran = list(db.kelahiran.find({}))
+    for d in data_kelahiran:
+        d["_id"] = str(d["_id"])
+
+    data_kematian = list(db.kematian.find({}))
+    for d in data_kematian:
+        d["_id"] = str(d["_id"])
+
+    data_domisili = list(db.domisili.find({}))
+    for d in data_domisili:
+        d["_id"] = str(d["_id"])
+
     try:
         payload = jwt.decode(
             token_receive, 
@@ -47,6 +57,16 @@ def home_admin():
             data_domisili = data_domisili)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('loginAdmin'))
+    
+@app.route ('/lihat_syarat/<file>', methods=['GET'])
+def lihat_syarat(file):
+    path= "./static/syarat/"
+    file_path = os.path.join(path, file)  
+    if os.path.isfile(file_path):
+        return send_file(file_path, as_attachment=True)
+    
+    else:
+        return 'File not found'
 
 @app.route('/user', methods=['GET'])
 def home_user():
@@ -228,12 +248,12 @@ def pengaduan_get():
             'msg': 'Successful fetched all posts',
             'posts': posts})
 
-@app.route('/homepage_user/status',methods=['GET'])
-def status():
+@app.route('/homepage_user/status/<username>',methods=['GET'])
+def status(username):
     token_receive = request.cookies.get(TOKEN_KEY)
-    status_kelahiran = db.kelahiran.find()
-    status_domisili = db.domisili.find()
-    status_kematian = db.kematian.find()
+    status_kelahiran = db.kelahiran.find({'username': username})
+    status_domisili = db.domisili.find({'username': username})
+    status_kematian = db.kematian.find({'username': username})
 
     try:
         payload = jwt.decode(
@@ -241,17 +261,30 @@ def status():
             SECRET_KEY, 
             algorithms=["HS256"],
         )
+        status = username == payload.get('name')
         name_info = db.user.find_one({
-            'name': payload["name"]})
+            'name': username},
+            {'_id' : False})
         return render_template(
             'status.html', 
             name_info=name_info, 
-            status_kelahiran = status_kelahiran,
+            status = status,
             status_domisili = status_domisili,
+            status_kelahiran = status_kelahiran,
             status_kematian = status_kematian)
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
+
+@app.route ('/download_surat/<file>', methods=['GET'])
+def unduh_kelahiran(file):
+    path= "./static/surat/"
+    file_path = os.path.join(path, file)  
+    if os.path.isfile(file_path):
+        return send_file(file_path, as_attachment=True)
     
+    else:
+        return 'File not found'
+
 @app.route('/update_profile', methods=['POST'])
 def save_img():
     token_receive = request.cookies.get(TOKEN_KEY)
@@ -312,6 +345,7 @@ def kelahiran_post():
         ibu = request.form['ibu']
         no = request.form['no']
         jk = request.form['jenis-kelamin']
+        username = request.form['username']
         count = db.kelahiran.count_documents({})
         num = count + 1
 
@@ -327,6 +361,7 @@ def kelahiran_post():
 
         
         doc={
+            "username":username,
             "num" : num,
             "nama_bayi" : name,
             "tempat_lahir": tempat,
@@ -366,6 +401,7 @@ def domisili_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
         name = payload['name']
         
+        username = request.form['username']
         name = request.form['name']
         ttl = request.form['ttl']
         jk = request.form['jenis-kelamin']
@@ -386,6 +422,7 @@ def domisili_post():
 
         
         doc={
+            "username" : username,
             "num" : num,
             "nama" : name,
             "ttl" : ttl,
@@ -423,6 +460,7 @@ def kematian_post():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
         name = payload['name']
         
+        username = request.form['username']
         name = request.form['nama']
         ttl = request.form['ttl']
         agama = request.form['agama']
@@ -445,6 +483,7 @@ def kematian_post():
 
         
         doc={
+            "username" : username,
             "num" : num,
             "nama" : name,
             "ttl" : ttl,
@@ -462,17 +501,159 @@ def kematian_post():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for('home_user'))
 
-@app.route('/resume/kelahiran',methods=['GET','POST'])
-def resume_kelahiran():
-    return render_template('resume_kelahiran.html')
+@app.route('/edit/kelahiran',methods=['GET','POST'])
+def edit_kelahiran():
+    if request.method == "GET":
+        id = request.args.get("id")
+        data = db.kelahiran.find_one({"_id":ObjectId(id)})
+        data["_id"]=str(data["_id"])
+        print(data)
+        return render_template("edit_kelahiran.html",data=data)
+    
+    id = request.form["id"]
+    status = request.form["status"]
+    file_path= ""
+    file = request.files["pdf"]
+    if file:
+        filename = secure_filename(file.filename)
+        extension = filename.split(".")[-1]
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+        file_path = f'surat_kelahiran-{mytime}.{extension}'
+        file.save("./static/surat/" + file_path)
+    db.kelahiran.update_one({"_id":ObjectId(id)},{'$set':{"status":status,"surat":file_path}})
+    return redirect('/admin')
 
-@app.route('/resume/domisili',methods=['GET','POST'])
-def resume_domisili():
-    return render_template('resume_domisili.html')
+@app.route('/edit/kematian',methods=['GET','POST'])
+def edit_kematian():
+    if request.method == "GET":
+        id = request.args.get("id")
+        data = db.kematian.find_one({"_id":ObjectId(id)})
+        data["_id"]=str(data["_id"])
+        print(data)
+        return render_template("edit_kematian.html",data=data)
+    
+    id = request.form["id"]
+    status = request.form["status"]
+    file_path= ""
+    file = request.files["pdf"]
+    if file:
+        filename = secure_filename(file.filename)
+        extension = filename.split(".")[-1]
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+        file_path = f'surat_kematian-{mytime}.{extension}'
+        file.save("./static/surat/" + file_path)
+    db.kematian.update_one({"_id":ObjectId(id)},{'$set':{"status":status,"surat":file_path}})
+    return redirect('/admin')
 
-@app.route('/resume/kematian',methods=['GET','POST'])
-def resume_kematian():
-    return render_template('resume_kematian.html')
+@app.route('/edit/domisili',methods=['GET','POST'])
+def edit_domisili():
+    if request.method == "GET":
+        id = request.args.get("id")
+        data = db.domisili.find_one({"_id":ObjectId(id)})
+        data["_id"]=str(data["_id"])
+        print(data)
+        return render_template("edit_domisili.html",data=data)
+    
+    id = request.form["id"]
+    status = request.form["status"]
+    file_path= ""
+    file = request.files["pdf"]
+    if file:
+        filename = secure_filename(file.filename)
+        extension = filename.split(".")[-1]
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+        file_path = f'surat_domisili-{mytime}.{extension}'
+        file.save("./static/surat/" + file_path)
+    db.domisili.update_one({"_id":ObjectId(id)},{'$set':{"status":status,"surat":file_path}})
+    return redirect('/admin')
+
+@app.route('/convert_to_pdf/kelahiran', methods=['GET','POST'])
+def convert_pdf_kelahiran():
+  # Generate the HTML dynamicall
+    data = {
+        "nama":request.form['nama'],
+        "tempat":request.form['tempat'],
+        "tanggal":request.form['tanggal'],
+        "gender":request.form['gender'],
+        "anak":request.form['anak'],
+        "ayah":request.form['ayah'],
+        "ibu":request.form['ibu'],
+
+    }
+    html = render_template('resume_kelahiran.html',data=data)  # Replace 'your_template.html' with your own template
+
+    # Create a PDFCrowd client
+    client = pdfcrowd.HtmlToPdfClient('finalproject', '533d5b4798c23089843bcbbcb9241575')  # Replace 'username' and 'apikey' with your PDFCrowd credentials
+
+    # Convert HTML to PDF
+    pdf = client.convertString(html)
+
+    # Create a response with the PDF content
+    response = make_response(pdf)
+
+    nama = request.form ['nama']
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename=Surat Kelahiran-{nama}.pdf' 
+    return response
+
+@app.route('/convert_to_pdf/kematian', methods=['GET','POST'])
+def convert_pdf_kematian():
+  # Generate the HTML dynamicall
+    data = {
+        "nama":request.form['nama'],
+        "ttl":request.form['ttl'],
+        "agama":request.form['agama'],
+        "jk":request.form['jk'],
+        "tempat":request.form['tempat'],
+        "tanggal":request.form['tanggal'],
+        "penyebab":request.form['penyebab'],
+
+    }
+    html = render_template('resume_kematian.html',data=data)  # Replace 'your_template.html' with your own template
+
+    # Create a PDFCrowd client
+    client = pdfcrowd.HtmlToPdfClient('finalproject', '533d5b4798c23089843bcbbcb9241575')  # Replace 'username' and 'apikey' with your PDFCrowd credentials
+
+    # Convert HTML to PDF
+    pdf = client.convertString(html)
+
+    # Create a response with the PDF content
+    response = make_response(pdf)
+
+    nama = request.form ['nama']
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename=Surat Kematian-{nama}.pdf' 
+    return response
+
+@app.route('/convert_to_pdf/domisili', methods=['GET','POST'])
+def convert_pdf_domisili():
+  # Generate the HTML dynamicall
+    data = {
+        "nama":request.form['nama'],
+        "ttl":request.form['ttl'],
+        "work":request.form['work'],
+        "alamat":request.form['alamat'],
+        "jk":request.form['jk'],
+    }
+    html = render_template('resume_domisili.html',data=data)  # Replace 'your_template.html' with your own template
+
+    # Create a PDFCrowd client
+    client = pdfcrowd.HtmlToPdfClient('finalproject', '533d5b4798c23089843bcbbcb9241575')  # Replace 'username' and 'apikey' with your PDFCrowd credentials
+
+    # Convert HTML to PDF
+    pdf = client.convertString(html)
+
+    # Create a response with the PDF content
+    response = make_response(pdf)
+
+    nama = request.form ['nama']
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = f'inline; filename=Surat Domisili-{nama}.pdf' 
+    return response
+
 
 @app.route('/user/delete_birth/<birth_id>', methods=['POST'])
 def delete_birth(birth_id):
