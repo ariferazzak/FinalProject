@@ -17,13 +17,17 @@ load_dotenv(dotenv_path)
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-MONGODB_URI = os.environ.get("mongodb://finalproject387:finalproject@ac-vhmfphz-shard-00-00.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-01.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-02.86upttf.mongodb.net:27017/?ssl=true&replicaSet=atlas-wpdkgq-shard-0&authSource=admin&retryWrites=true&w=majority")
-DB_NAME =  os.environ.get("dbfinal_project")
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DBNAME")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+algorithms = os.environ.get("algorithms")
 
 client = MongoClient(MONGODB_URI)
 db = client[DB_NAME]
 
-SECRET_KEY = 'finalProject'
+ALGO = algorithms
+SECRET_KEY = SECRET_KEY
+
 TOKEN_KEY = 'mytoken'
 TOKEN_ADMIN = 'admintoken'
 
@@ -51,7 +55,7 @@ def home_admin():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO,
         )
         name_info = db.admin.find_one({
             'id': payload["id"]})
@@ -82,7 +86,7 @@ def home_user():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO,
         )
         print(payload)
         name_info = db.user.find_one({
@@ -145,7 +149,7 @@ def login_admin():
         token = jwt.encode(
             payload,
             SECRET_KEY,
-            algorithm="HS256"
+            ALGO
             )
         return jsonify({"result": "success", "token": token})
     else:
@@ -171,7 +175,7 @@ def login_user():
         token = jwt.encode(
             payload,
             SECRET_KEY,
-            algorithm="HS256"
+            ALGO
             )
         return jsonify({"result": "success", "token": token})
     else:
@@ -184,7 +188,7 @@ def pengaduan():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO
         )
         name_info = db.user.find_one({
             'name': payload["name"]})
@@ -196,7 +200,7 @@ def pengaduan():
 def pengaduan_post():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        payload = jwt.decode(token_receive, SECRET_KEY, ALGO)        
         name_info = db.user.find_one({
             'name': payload["name"]})
         name = request.form.get('name')
@@ -266,7 +270,7 @@ def status(username):
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO,
         )
         status = username == payload.get('name')
         name_info = db.user.find_one({
@@ -296,7 +300,7 @@ def unduh_kelahiran(file):
 def save_img():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')
+        payload = jwt.decode(token_receive, SECRET_KEY, ALGO)
         name = payload['name']
         longname_receive = request.form["longname_give"]
         
@@ -330,7 +334,7 @@ def kelahiran():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO,
         )
         name_info = db.user.find_one({
             'name': payload["name"]})
@@ -342,7 +346,7 @@ def kelahiran():
 def kelahiran_post():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        payload = jwt.decode(token_receive, SECRET_KEY, ALGO)        
         name = payload['name']
         
         name = request.form['name']
@@ -393,7 +397,7 @@ def domisili():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO,
         )
         name_info = db.user.find_one({
             'name': payload["name"]})
@@ -405,7 +409,7 @@ def domisili():
 def domisili_post():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        payload = jwt.decode(token_receive, SECRET_KEY, ALGO)        
         name = payload['name']
         
         username = request.form['username']
@@ -452,7 +456,7 @@ def kematian():
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"],
+            ALGO,
         )
         name_info = db.user.find_one({
             'name': payload["name"]})
@@ -464,7 +468,7 @@ def kematian():
 def kematian_post():
     token_receive = request.cookies.get(TOKEN_KEY)
     try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms='HS256')        
+        payload = jwt.decode(token_receive, SECRET_KEY, ALGO)        
         name = payload['name']
         
         username = request.form['username']
@@ -670,7 +674,7 @@ def delete_birth(birth_id):
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"]
+            ALGO
         )
         
         # Check if the user is an admin
@@ -695,7 +699,7 @@ def delete_domisili(domisili_id):
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"]
+            ALGO
         )
         
         # Check if the user is an admin
@@ -720,7 +724,7 @@ def delete_die(die_id):
         payload = jwt.decode(
             token_receive, 
             SECRET_KEY, 
-            algorithms=["HS256"]
+            ALGO
         )
         
         # Check if the user is an admin
