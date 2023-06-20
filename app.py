@@ -8,13 +8,20 @@ from werkzeug.utils import secure_filename
 from bson import ObjectId
 import pdfcrowd
 import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-koneksi_mongodb = 'mongodb://finalproject387:finalproject@ac-vhmfphz-shard-00-00.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-01.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-02.86upttf.mongodb.net:27017/?ssl=true&replicaSet=atlas-wpdkgq-shard-0&authSource=admin&retryWrites=true&w=majority'
-client = MongoClient(koneksi_mongodb)
-db = client.dbfinal_project
+MONGODB_URI = os.environ.get("mongodb://finalproject387:finalproject@ac-vhmfphz-shard-00-00.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-01.86upttf.mongodb.net:27017,ac-vhmfphz-shard-00-02.86upttf.mongodb.net:27017/?ssl=true&replicaSet=atlas-wpdkgq-shard-0&authSource=admin&retryWrites=true&w=majority")
+DB_NAME =  os.environ.get("dbfinal_project")
+
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
 
 SECRET_KEY = 'finalProject'
 TOKEN_KEY = 'mytoken'
