@@ -31,6 +31,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/static/user.js"></script>
     <style>
         * {
             font-family: 'Lobster', cursive;
@@ -481,7 +482,34 @@
             </div>
         </div>
     </div>
-
+    <!-- class modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Profile</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="pic" class="form-label">Ubah Foto Profil</label>
+                <input type="file" class="form-control" id="picture">
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label">Ubah Nama Lengkap</label>
+                <input type="text" class="form-control" id="username_update" placeholder="Nama anda">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button onclick="update_profile()" type="button" class="btn btn-dark">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
     <script src="/static/sidebar.js"></script>
     <script>
         function send(){
